@@ -100,9 +100,9 @@ export default function HomePage() {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden border-2 border-primary-200/60 shadow-2xl bg-white p-3">
                 <img
-                  src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=800&q=80"
-                  alt="Ecocraze Eco Tableware Collection"
-                  className="rounded-2xl w-full h-[380px] object-cover"
+                  src="/paper-plates-collection.png"
+                  alt="Ecocraze Paper Plates and Tableware Collection"
+                  className="rounded-2xl w-full h-[380px] object-cover object-center"
                 />
 
                 {/* Floating Badge 1 */}
@@ -147,21 +147,21 @@ export default function HomePage() {
             title="Paper Plates & Thalis"
             subtitle="Silver laminated, kraft round, and 3-compartment heavy feast plates (7 to 12 inches)."
             itemCount="4 Products"
-            imageUrl="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=600&q=80"
+            imageUrl="/paper-plates-collection.png"
           />
           <CategoryCard
             category="dona-bowls"
             title="Paper Dona Bowls"
             subtitle="Deep curry, chaat, and sweet bowls with leak-proof lining (100ml to 450ml jumbo sizes)."
             itemCount="4 Products"
-            imageUrl="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+            imageUrl="/products/silver-dona-bowls.jpg"
           />
           <CategoryCard
             category="tissue-papers"
             title="Tissue Papers & Rolls"
             subtitle="2-ply virgin pulp table napkins, dispenser tissues, and absorbent kitchen paper rolls."
             itemCount="4 Products"
-            imageUrl="https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80"
+            imageUrl="/products/white-table-napkins.jpg"
           />
         </div>
       </section>

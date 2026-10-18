@@ -63,7 +63,7 @@ export async function saveProduct(product: Partial<Product> & { name: string; ca
     description: product.description || '',
     category: product.category,
     size: product.size || '',
-    image_url: product.image_url || 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=600&q=80',
+    image_url: product.image_url || '/paper-plates-collection.png',
     price: Number(product.price),
     stock: Number(product.stock || 0),
     active: product.active !== undefined ? product.active : true,

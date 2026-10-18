@@ -73,7 +73,7 @@ export default function AdminProducts() {
       description: '',
       category: 'paper-plates',
       size: '10 Inch (Pack of 50)',
-      image_url: 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=600&q=80',
+      image_url: '/paper-plates-collection.png',
       price: 150,
       stock: 500,
       active: true,
