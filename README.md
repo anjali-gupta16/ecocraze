@@ -110,63 +110,16 @@ To access `/admin`, log in with an administrator account:
 
 ---
 
-## 🚢 Deployment on Vercel (Step-by-Step)
+## 🚢 Deployment on Vercel
 
-Follow these exact steps to deploy Ecocraze on [Vercel](https://vercel.com/):
-
-### 1. Import Project
-1. Log in to [Vercel Dashboard](https://vercel.com/dashboard).
-2. Click **Add New...** ➔ **Project**.
-3. Select your GitHub repository: `anjali-gupta16/ecocraze`.
-
-### 2. Configure Build & Output Settings
-Vercel automatically detects Vite, but verify the following settings:
-- **Framework Preset:** `Vite`
-- **Root Directory:** `./`
-- **Build Command:** `npm run build`
-- **Output Directory:** `dist`
-- **Install Command:** `npm install`
-
-### 3. Environment Variables (Required for Full Functionality)
-In the **Environment Variables** section during project import (or under **Settings ➔ Environment Variables**):
-
-| Key | Example Value | Description |
-|---|---|---|
-| `VITE_SUPABASE_URL` | `https://xyzcompany.supabase.co` | Your Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | `eyJhbGciOi...` | Supabase Anon Public Key |
-| `VITE_RAZORPAY_KEY_ID` | `rzp_test_PlateConnectDemo` | Razorpay Test Key ID |
-| `VITE_WHATSAPP_PHONE` | `917676349773` | WhatsApp Order & Support Phone |
-| `VITE_GA4_MEASUREMENT_ID` | `G-XXXXXXXXXX` *(Optional)* | Google Analytics 4 Measurement ID |
-
-> 💡 **Offline/Demo Fallback:** If environment variables are omitted or blank, the app runs smoothly with its built-in in-memory catalog, mock orders, and full demo data.
-
-### 4. SPA Routing Configuration
-The included [vercel.json](file:///c:/paper%20plate/vercel.json) automatically handles single-page application (SPA) client-side routes, ensuring that refreshing on sub-paths like `/products`, `/checkout`, or `/admin` routes directly to `index.html` without 404 errors.
-
----
-
-## 🔧 Common Build & Deployment Troubleshooting
-
-### Issue: `npm run build` fails with TS1005 / TS1109 errors
-- **Cause:** Duplicate or misplaced syntax in data files or TypeScript declarations.
-- **Fix:** Fixed in latest commit by cleaning `src/lib/productsData.ts` and verifying `tsc && vite build` compiles cleanly with zero errors.
-
-### Issue: 404 on page refresh on Vercel
-- **Cause:** Missing client-side route rewrites.
-- **Fix:** Handled by [vercel.json](file:///c:/paper%20plate/vercel.json) rewrites:
-  ```json
-  {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/index.html"
-      }
-    ]
-  }
-  ```
+1. Push your repository to GitHub or GitLab.
+2. Go to [Vercel](https://vercel.com/) and click **Add New Project**.
+3. Import your repository.
+4. Set the build command to `npm run build` and output directory to `dist`.
+5. Add the environment variables from your `.env` file under **Settings ➔ Environment Variables**.
+6. Click **Deploy**. The included `vercel.json` ensures all SPA client-side routes rewrite properly to `index.html`.
 
 ---
 
 ## 📜 License
 MIT License. Built for Ecocraze hackathon submission.
-
