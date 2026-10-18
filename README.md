@@ -1,125 +1,171 @@
-# Ecocraze — Eco-Friendly B2B Wholesale Tableware E-Commerce
+# 🍃 ECOCRAZE — Singularity V1.0
 
-> Built for the 2-day Hackathon. A production-ready, responsive B2B and retail e-commerce platform for eco-friendly **Paper Plates, Dona Bowls, and Tissue Papers** with automated bulk-tier pricing, private admin console, visitor analytics funnel, Razorpay test payments, and WhatsApp wholesale ordering.
+**ECOCRAZE** is a next-generation, AI-ready multi-channel B2B & retail wholesale e-commerce platform built for the modern eco-friendly disposable tableware industry. It features a stunning Eco-Modern/Glassmorphism UI, automated bulk tiered-pricing engines, instant WhatsApp dispatch orchestration, live order tracking with a 5-step visual timeline, and an all-in-one private administration command center.
 
----
-
-## 🌟 Highlights & Key Features
-
-- **Automated Bulk Pricing Tiers:** Instant tier discounts (e.g. 1–9, 10–49, 50+ packets) applied dynamically in the cart with visible per-packet wholesale savings.
-- **WhatsApp Direct Ordering:** Floating WhatsApp hub + "Order on WhatsApp" and "Order Cart on WhatsApp" with formatted prefilled messages using `VITE_WHATSAPP_PHONE`.
-- **Public Storefront:**
-  - **Home:** Hero value prop, category showcases, why-choose-us, wholesale bestsellers grid, enterprise deals banner, client testimonials.
-  - **Products Catalog:** Multi-category filter pills, live search bar, price & savings sort, responsive catalog grid.
-  - **Product Detail:** Live bulk price breaks table, interactive quantity stepper with dynamic subtotal recalculation, food-grade eco credentials, and related products.
-  - **Cart & Checkout:** Dynamic bulk discount highlights, free shipping progress bar (orders ≥ ₹999), 10-digit phone and PIN validation, GSTIN input credit option.
-  - **Order Confirmation & My Account:** 5-step visual dispatch timeline (`Pending` ➔ `Confirmed` ➔ `Processing` ➔ `Shipped` ➔ `Delivered`), order history, and **1-click Reorder** button.
-  - **About & Contact:** Brand mission, sustainability statistics, inquiry form with WhatsApp sales escalation, depot loading hours.
-- **Private Admin Console (`/admin`):**
-  - **Overview:** Gross turnover KPIs, Recharts 7-day revenue area chart, recent orders table, low-stock alerts.
-  - **Visitors Analytics:** Daily/weekly/monthly trends, unique visitors, most viewed pages, top viewed products, and 5-stage checkout funnel with drop-off rates.
-  - **Customers & Security:** Registered client accounts, aggregate successful logins, security audit on failed login attempts.
-  - **Orders Management:** Live search, dispatch stage dropdown, payment confirmation, cancel & refund processing.
-  - **Products & Inventory:** Full CRUD, bulk pricing tier editor, real-time stock adjustment, safety threshold alerts (< 350 pkts).
-  - **Payments & Revenue Accounting:** Strictly separates **Total Gross Sales**, **Revenue Received**, **Pending Collections**, **Refunds Processed**, and **Average Order Value (AOV)**.
-- **Event Tracking Telemetry:** Logs all user actions (`page_view`, `product_view`, `add_to_cart`, `checkout_started`, `login`, `register`, `order_placed`) to Supabase `events` table with session IDs and optional Google Analytics 4 snippet.
+Live URL: [https://ecocraze.vercel.app](https://ecocraze.vercel.app)  
+GitHub Repository: [https://github.com/anjali-gupta16/ecocraze](https://github.com/anjali-gupta16/ecocraze)
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Key Features & Modules
 
-| Technology | Purpose |
-|---|---|
-| **React 18 + TypeScript** | Client-side application framework |
-| **Vite** | Blazing-fast build tool and dev server |
-| **Tailwind CSS v4** | Custom theme tokens from Stitch (#16A34A Leaf Green, Amber accents) |
-| **React Router v7** | Multi-page client routing with shared layouts |
-| **Supabase** | PostgreSQL database, Row-Level Security (RLS), and authentication |
-| **Recharts** | Interactive admin area charts and bar graphs |
-| **Lucide React** | Consistent, modern icon set |
-| **Razorpay** | Test mode online payments with server-side settlement validation |
+### 1. 🔐 Role-Based Access Control (RBAC) & Authentication
+- **Admin**: Full access to the private `/admin` command center, gross revenue accounting, inventory management, customer registries, security audit logs, and order dispatch pipelines.
+- **Wholesale Customer**: Access to wholesale discounts, dynamic cart recalculations, tax invoice generation, 1-click reorder history, and personalized profile dashboards.
+- **Guest / Retail Shopper**: Open catalog browsing, search and filter capabilities, and instant checkout with real-time tier calculation.
+- **1-Click Evaluation Gateways**: Instant login shortcuts (`/customer` and `/admin-access`) with pre-populated credentials for seamless evaluation without manual typing.
+
+### 2. 🏷️ Dynamic B2B Bulk Tiered Pricing Engine
+- **Automated Price Breaks**: Instant wholesale quantity discounts (e.g. 1–9, 10–49, 50+ packets) applied dynamically in the product stepper and shopping cart.
+- **Transparent Savings Badges**: Real-time visualization of per-packet savings percentage and gross discount amounts encouraging higher cart values.
+- **Free Shipping Threshold**: Dynamic animated progress bar showing the remaining amount required for free freight shipping (orders ≥ ₹999).
+- **GSTIN Tax Invoicing**: Dedicated GST number capture at checkout for business input tax credit claims.
+
+### 3. 💬 WhatsApp Ordering Hub & Direct Conversational Commerce
+- **1-Click WhatsApp Ordering**: Prefilled WhatsApp orders with itemized product names, quantities, wholesale discounts, delivery addresses, and total costs.
+- **Floating Communication Hub**: Global reactive WhatsApp contact widget for quick inquiries, bulk rate negotiations, and logistics support.
+- **Automated Message Templating**: Direct integration via `VITE_WHATSAPP_PHONE` enabling zero-friction procurement for restaurant and catering partners.
+
+### 4. 💳 Hybrid Dual-Rail Payments
+- **Razorpay Online Gateway**: Full test mode integration supporting Credit/Debit Cards, NetBanking, and Wallets with secure signature tracking.
+- **Instant UPI QR Scanner**: Dynamic embedded UPI QR modal allowing immediate direct payment scanning via PhonePe, Google Pay, and Paytm.
+- **Cash on Delivery (COD)**: Traditional B2B settlement workflow with order status tracking.
+- **Graceful Fallback (Demo Mode)**: If keys are missing, the system gracefully processes mock checkouts without failing or breaking presentations.
+
+### 5. 🛡️ Private Admin Command Center & Operations HQ (`/admin`)
+- **Gross Turnover & Analytics**: Real-time gross turnover KPI cards, average order values (AOV), and 7-day revenue area charts powered by Recharts.
+- **Telemetry Funnel & Visitor Tracking**: Full behavioral telemetry logging `page_view`, `product_view`, `add_to_cart`, `checkout_started`, and `order_placed` events into Supabase, complete with a 5-stage checkout funnel with drop-off analytics.
+- **Live Inventory & Pricing Editor**: Full CRUD over catalog items, bulk tier adjustment, stock increment/decrement, and low-stock threshold alerts (< 350 units).
+- **Order Dispatch Workflow**: 5-stage order transition (`Pending` ➔ `Confirmed` ➔ `Processing` ➔ `Shipped` ➔ `Delivered`) with cancel and refund management.
+- **Security & Failed Login Audit**: Continuous audit log recording all successful entries and suspicious failed authentication attempts.
+
+### 6. 🎨 UI/UX & Aesthetics
+- Built with a tailored **Eco-Modern / Glassmorphism** aesthetic.
+- Features dynamic micro-animations, glowing emerald badges (`#16A34A`), frosted translucent glass cards, and reactive hover states.
+- Fully responsive across mobile, tablet, and ultra-wide screens with accessible color contrast and modern typography.
 
 ---
 
-## 🚀 Quick Start & Local Setup
+## 🛠️ Technology Stack
 
-### 1. Clone & Install Dependencies
+- **Frontend**: React 19, TypeScript, Vite
+- **Styling**: Vanilla CSS tokens (`src/index.css`), Tailwind CSS v4, Lucide React (Icons)
+- **Routing & State**: React Router DOM v7 (SPA with `vercel.json` rewrites), Context API (`AuthContext`, `CartContext`)
+- **Visualizations**: Recharts (Interactive Revenue Trends, Sales Area Charts)
+- **Database & Auth**: Supabase (PostgreSQL, Row Level Security, Auth Session Tokens)
+- **Payments**: Razorpay Checkout SDK + Direct UPI QR Scanner Card
+- **Hosting & CI/CD**: Vercel (Edge Network) + GitHub Actions/Webhooks
+
+---
+
+## 🏗️ System Architecture
+
+```text
++------------------------------------------------------------------------------------+
+|                                    CLIENT TIER                                     |
+|  [ Storefront ]      [ Bulk Catalog ]     [ Shopping Cart ]     [ Admin Console ]  |
+|  (Home/Products)     (Quantity Tiers)     (Dynamic Savings)     (KPIs & Analytics) |
++------------------------------------------+-----------------------------------------+
+                                           |
+                                  React Router v7 / SPA
+                                           |
++------------------------------------------v-----------------------------------------+
+|                                    LOGIC TIER                                      |
+|  [ AuthContext ]      [ CartContext ]      [ Telemetry Engine ]     [ Mock Store ] |
+|  (RBAC & Sessions)    (Tier Calculations)  (useTracking / GA4)      (Offline Fall) |
++------------------+-----------------------+-----------------------+-----------------+
+                   |                       |                       |
++------------------v-----+   +-------------v----------+   +--------v-----------------+
+|     PAYMENT RAILS      |   |   WHATSAPP API HUB     |   |   DATABASE & AUTH (RLS)  |
+| - Razorpay SDK         |   | - Direct Prefilled URL |   | - Supabase PostgreSQL    |
+| - Dynamic UPI QR Modal |   | - 1-Click B2B Dispatch |   | - Profiles, Orders, Logs |
+| - COD Settlement Engine|   | - Phone Concierge      |   | - Row-Level Security     |
++------------------------+   +------------------------+   +--------------------------+
+```
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/anjali-gupta16/ecocraze.git
+cd ecocraze
+```
+
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 2. Environment Configuration
-Copy the template file to `.env`:
+### 3. Environment Variables
+Create a `.env` file in the root directory (or copy from `.env.example`):
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your credentials:
+Add your configuration keys:
 ```env
-# Supabase Configuration
+# Supabase Configuration (Optional - built-in fallback activated if blank)
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 
-# Razorpay Test Mode Key ID (Default public test key enabled)
-VITE_RAZORPAY_KEY_ID=rzp_test_EcocrazeDemo
+# Razorpay Test Mode Key ID
+VITE_RAZORPAY_KEY_ID=rzp_test_PlateConnectDemo
 
-# WhatsApp Phone Number (International format without '+')
-VITE_WHATSAPP_PHONE=919876543210
+# WhatsApp Order & Support Phone (Country code without '+')
+VITE_WHATSAPP_PHONE=917676349773
 
 # Optional Google Analytics 4 Measurement ID
-VITE_GA4_MEASUREMENT_ID=G-XXXXXXXXXX
+VITE_GA4_MEASUREMENT_ID=
 ```
 
-> **Note on Offline/Demo Mode:** If you run the app before configuring Supabase keys, Ecocraze automatically activates an integrated fallback store loaded with all 12 seed products, sample orders, and live analytics, allowing full offline evaluation!
+> 💡 **Graceful Fallback (Offline Mode):** If Supabase keys are not provided, Ecocraze automatically launches in **Integrated Demo Mode** loaded with all 12 seed products, sample orders, and live telemetry so your demonstration never breaks.
 
-### 3. Start Development Server
+### 4. Run the Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Navigate to `http://localhost:5173` to view the application.
 
 ---
 
-## 🗄️ Supabase Database & RLS Setup
+## 🗄️ Database Schema (Supabase)
 
-1. Open your [Supabase Dashboard](https://supabase.com/dashboard) and create a project.
-2. Go to **SQL Editor** in the left sidebar.
-3. Open `supabase/schema.sql` from this repository, paste the entire SQL into the editor, and click **Run**.
-   - This creates `profiles`, `products`, `bulk_pricing`, `orders`, `order_items`, `payments`, and `events` tables with all RLS policies and user creation triggers.
-4. Open `supabase/seed.sql`, paste into the editor, and click **Run**.
-   - This populates 12 initial products across Paper Plates, Dona Bowls, and Tissue Papers with 3 bulk pricing tiers each.
+The project includes production-ready database scripts located in [`supabase/schema.sql`](supabase/schema.sql) and [`supabase/seed.sql`](supabase/seed.sql):
 
----
+- **`profiles`**: User profiles linked to Supabase Auth (`id`, `full_name`, `company_name`, `phone`, `role`, `gstin`).
+- **`products`**: Catalog items (`id`, `name`, `category`, `size`, `price`, `stock`, `image_url`, `active`).
+- **`bulk_pricing`**: Quantity break definitions (`product_id`, `min_qty`, `max_qty`, `unit_price`).
+- **`orders`**: Customer purchase records (`order_number`, `user_id`, `total_amount`, `discount_amount`, `status`, `shipping_address`).
+- **`order_items`**: Line items per order (`order_id`, `product_id`, `quantity`, `unit_price`, `subtotal`).
+- **`payments`**: Transaction records (`order_id`, `amount`, `payment_method`, `transaction_id`, `status`).
+- **`events`**: Behavioral analytics log (`session_id`, `event_type`, `page_path`, `product_id`, `metadata`).
+- **`security_logs`**: Authentication audit trails for security monitoring.
 
-## 🔐 Admin Access & Demo Credentials
-
-To access `/admin`, log in with an administrator account:
-- **Email:** `admin@Ecocraze.in`
-- **Password:** `Admin@123456`
-
-*(Alternatively, use the **"Fill Admin Demo"** button on the `/login` page for one-click evaluator login!)*
+*(Row Level Security (RLS) policies ensure clients only view their own records while administrators retain system-wide visibility).*
 
 ---
 
-## 💳 Razorpay Test Mode Flow
+## 🔑 Quick Access & Demo Credentials
 
-- Test card payments, UPI, and NetBanking are initialized via `initiateRazorpayPayment()` using test credentials.
-- Order records are created initially with `payment_status: 'pending'`.
-- Status is only updated to `'paid'` upon verified gateway handler completion and recorded into the `payments` table.
-- Cash on Delivery (COD) is available as an alternative checkout option.
+| Role | 1-Click Fast Link | Email | Password |
+|---|---|---|---|
+| **Wholesale Customer** | [`/customer`](https://ecocraze.vercel.app/customer) | `anjali.gupta.ashok16@gmail.com` | `Anjali@123456` |
+| **Admin Operations** | [`/admin-access`](https://ecocraze.vercel.app/admin-access) | `anshumangupta2501@gmail.com` | `Admin@123456` |
 
 ---
 
 ## 🚢 Deployment on Vercel
 
-1. Push your repository to GitHub or GitLab.
-2. Go to [Vercel](https://vercel.com/) and click **Add New Project**.
-3. Import your repository.
-4. Set the build command to `npm run build` and output directory to `dist`.
-5. Add the environment variables from your `.env` file under **Settings ➔ Environment Variables**.
-6. Click **Deploy**. The included `vercel.json` ensures all SPA client-side routes rewrite properly to `index.html`.
+1. Import repository `anjali-gupta16/ecocraze` on [Vercel](https://vercel.com/).
+2. Verify Build Settings:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+3. Click **Deploy**. The included `vercel.json` ensures all client-side routes seamlessly rewrite to `index.html`.
 
 ---
 
-## 📜 License
-MIT License. Built for Ecocraze hackathon submission.
+## 👨‍💻 Developed For
+Built as a comprehensive hackathon project showcasing the integration of **Modern Web Technologies, Dynamic Bulk B2B Commerce, Hybrid Payments, and Telemetry Analytics** to solve real-world distribution challenges for eco-friendly disposable tableware.
