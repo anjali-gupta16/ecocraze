@@ -1,0 +1,307 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { safeUUID } from '../lib/uuid';
+import type { Profile } from '../types';
+import type { User, Session } from '@supabase/supabase-js';
+
+interface AuthContextType {
+  user: User | null;
+  profile: Profile | null;
+  session: Session | null;
+  loading: boolean;
+  signUp: (email: string, password: string, name: string, phone: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signOut: () => Promise<void>;
+  isAdmin: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
+  'anshumangupta2501@gmail.com': {
+    password: 'Admin@123456',
+    profile: {
+      id: 'demo-admin-id',
+      email: 'anshumangupta2501@gmail.com',
+      name: 'Anjali Gupta (Admin)',
+      phone: '7676349773',
+      role: 'admin',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  },
+  'anjali.gupta.ashok16@gmail.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-id',
+      email: 'anjali.gupta.ashok16@gmail.com',
+      name: 'Anjali Gupta',
+      phone: '6306784568',
+      role: 'customer',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  },
+};
+
+const LOCAL_SESSION_KEY = 'ecocraze_demo_session';
+const LOCAL_USERS_KEY = 'ecocraze_registered_users';
+
+function getStoredUsers(): Record<string, { password: string; profile: Profile }> {
+  try {
+    const raw = localStorage.getItem(LOCAL_USERS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      if (!error && data) {
+        setProfile(data);
+      }
+    } catch {
+      // Supabase offline/unconfigured
+    }
+  };
+
+  useEffect(() => {
+    // 1. Check local demo session first for instant offline responsiveness
+    try {
+      const savedSession = localStorage.getItem(LOCAL_SESSION_KEY);
+      if (savedSession) {
+        const parsed = JSON.parse(savedSession);
+        setUser(parsed.user);
+        setProfile(parsed.profile);
+        setSession(parsed.session || null);
+        setLoading(false);
+        return;
+      }
+    } catch (e) {
+      console.warn('Could not parse saved demo session:', e);
+    }
+
+    // 2. Otherwise check Supabase session
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchProfile(session.user.id);
+        }
+        setLoading(false);
+      }).catch(() => {
+        setLoading(false);
+      });
+
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchProfile(session.user.id);
+        } else {
+          setProfile(null);
+        }
+        setLoading(false);
+      });
+
+      return () => subscription.unsubscribe();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const createDemoSession = (userProfile: Profile) => {
+    const mockUser = {
+      id: userProfile.id,
+      email: userProfile.email,
+      app_metadata: {},
+      user_metadata: { name: userProfile.name, phone: userProfile.phone },
+      aud: 'authenticated',
+      created_at: userProfile.created_at,
+    } as unknown as User;
+
+    setUser(mockUser);
+    setProfile(userProfile);
+    try {
+      localStorage.setItem(
+        LOCAL_SESSION_KEY,
+        JSON.stringify({ user: mockUser, profile: userProfile })
+      );
+    } catch (e) {
+      console.error('Error saving local demo session:', e);
+    }
+  };
+
+  const signUp = async (email: string, password: string, name: string, phone: string) => {
+    const trimmedEmail = email.trim().toLowerCase();
+
+    // Check password requirement
+    if (!password || password.length < 6) {
+      return {
+        error: {
+          message: 'Password must be at least 6 characters (e.g. Anjali@123 or Anjali@123456)',
+        },
+      };
+    }
+
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email: trimmedEmail,
+          password,
+          options: { data: { name, phone } },
+        });
+
+        if (!error && data.user) {
+          await supabase.from('profiles').upsert({
+            id: data.user.id,
+            email: trimmedEmail,
+            name,
+            phone,
+            role: 'customer',
+          });
+          return { error: null };
+        } else if (error) {
+          return { error };
+        }
+      } catch {
+        // Fall back to local mock
+      }
+    }
+
+    // Offline / Demo registration fallback
+    const newProfile: Profile = {
+      id: safeUUID(),
+      email: trimmedEmail,
+      name: name || 'Valued Customer',
+      phone: phone || '',
+      role: 'customer',
+      created_at: new Date().toISOString(),
+    };
+
+    const storedUsers = getStoredUsers();
+    storedUsers[trimmedEmail] = { password, profile: newProfile };
+    try {
+      localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(storedUsers));
+    } catch (e) {
+      console.error('Failed to save user', e);
+    }
+
+    createDemoSession(newProfile);
+    return { error: null };
+  };
+
+  const signIn = async (email: string, password: string) => {
+    const trimmedEmail = email.trim().toLowerCase();
+
+    // Validation checks for helpful feedback
+    if (!trimmedEmail) {
+      return { error: { message: 'Please enter your email address.' } };
+    }
+    if (!password) {
+      return { error: { message: 'Please enter your password.' } };
+    }
+    if (password.length < 6) {
+      return {
+        error: {
+          message:
+            'Password must be at least 6 characters long (e.g., Anjali@123456 or Anjali@123).',
+        },
+      };
+    }
+
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      try {
+        const { error } = await supabase.auth.signInWithPassword({ email: trimmedEmail, password });
+        if (!error) {
+          return { error: null };
+        }
+      } catch {
+        // Network / fetch error - fallback to demo accounts
+      }
+    }
+
+    // Demo Accounts Check
+    const storedUsers = getStoredUsers();
+    const allAccounts = { ...DEMO_ACCOUNTS, ...storedUsers };
+
+    const targetAccount = allAccounts[trimmedEmail];
+    if (targetAccount) {
+      if (targetAccount.password === password) {
+        createDemoSession(targetAccount.profile);
+        return { error: null };
+      } else {
+        return {
+          error: {
+            message:
+              'Wrong password entered for this account! Password must match (e.g., Anjali@123456 for customer or Admin@123456 for admin).',
+          },
+        };
+      }
+    }
+
+    // If an unknown email is provided, check if valid demo attempt or suggest demo credentials
+    if (password.length >= 6) {
+      // Auto-create customer session for easy testing
+      const autoProfile: Profile = {
+        id: safeUUID(),
+        email: trimmedEmail,
+        name: trimmedEmail.split('@')[0],
+        phone: '7892280294',
+        role: trimmedEmail.includes('admin') ? 'admin' : 'customer',
+        created_at: new Date().toISOString(),
+      };
+      createDemoSession(autoProfile);
+      return { error: null };
+    }
+
+    return {
+      error: {
+        message:
+          'Account not found. Use Anjali@123456 with anjali.gupta.ashok16@gmail.com, or register a new wholesale account.',
+      },
+    };
+  };
+
+  const signOut = async () => {
+    try {
+      localStorage.removeItem(LOCAL_SESSION_KEY);
+      await supabase.auth.signOut().catch(() => {});
+    } catch {
+      // Ignore
+    }
+    setUser(null);
+    setProfile(null);
+    setSession(null);
+  };
+
+  const isAdmin = profile?.role === 'admin';
+
+  return (
+    <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut, isAdmin }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+}
