@@ -76,6 +76,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (!target.src.includes('plate-selection-sheet.png')) {
+              target.src = '/products/plate-selection-sheet.png';
+            }
+          }}
         />
         {product.stock <= 0 && (
           <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">

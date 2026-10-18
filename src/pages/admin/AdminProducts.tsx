@@ -245,6 +245,12 @@ export default function AdminProducts() {
                             src={p.image_url}
                             alt={p.name}
                             className="w-10 h-10 rounded-lg object-cover bg-slate-100 shrink-0 border"
+                            onError={(e) => {
+                              const target = e.currentTarget;
+                              if (!target.src.includes('plate-selection-sheet.png')) {
+                                target.src = '/products/plate-selection-sheet.png';
+                              }
+                            }}
                           />
                           <div className="min-w-0 max-w-xs">
                             <p className="font-bold text-text-primary truncate">{p.name}</p>

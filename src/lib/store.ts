@@ -3,19 +3,36 @@ import { SEED_PRODUCTS } from './productsData';
 import { safeUUID } from './uuid';
 import type { Product, Order, OrderItem, TrackingEvent, BulkTier } from '../types';
 
-const LOCAL_PRODUCTS_KEY = 'pc_local_products';
+const LOCAL_PRODUCTS_KEY = 'pc_local_products_v5';
 const LOCAL_ORDERS_KEY = 'pc_local_orders';
 const LOCAL_EVENTS_KEY = 'pc_local_events';
 
-// Initialize local storage products if not present
+// Initialize local storage products and auto-heal stale/broken cached products
 function getLocalProducts(): Product[] {
   try {
+    // Purge outdated caches from earlier versions
+    ['pc_local_products', 'pc_local_products_v1', 'pc_local_products_v2', 'pc_local_products_v3', 'pc_local_products_v4'].forEach((k) => {
+      try { localStorage.removeItem(k); } catch {}
+    });
+
     const raw = localStorage.getItem(LOCAL_PRODUCTS_KEY);
     if (!raw) {
       localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(SEED_PRODUCTS));
       return SEED_PRODUCTS;
     }
-    return JSON.parse(raw);
+
+    const parsed: Product[] = JSON.parse(raw);
+    // If any product still has old unsplash URLs or missing images, force refresh from SEED_PRODUCTS
+    const hasStaleImages = !Array.isArray(parsed) || parsed.length === 0 || parsed.some(
+      (p) => !p.image_url || p.image_url.includes('unsplash.com')
+    );
+
+    if (hasStaleImages) {
+      localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(SEED_PRODUCTS));
+      return SEED_PRODUCTS;
+    }
+
+    return parsed;
   } catch {
     return SEED_PRODUCTS;
   }

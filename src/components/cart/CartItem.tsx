@@ -28,6 +28,12 @@ export default function CartItem({ item }: CartItemProps) {
             src={product.image_url}
             alt={product.name}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.src.includes('plate-selection-sheet.png')) {
+                target.src = '/products/plate-selection-sheet.png';
+              }
+            }}
           />
         </Link>
 

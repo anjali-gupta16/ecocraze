@@ -126,6 +126,12 @@ export default function ProductDetailPage() {
               src={product.image_url}
               alt={product.name}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('plate-selection-sheet.png')) {
+                  target.src = '/products/plate-selection-sheet.png';
+                }
+              }}
             />
             <div className="absolute top-4 left-4 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
               <Leaf className="w-3.5 h-3.5 fill-white stroke-none" />
