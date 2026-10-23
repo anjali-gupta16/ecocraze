@@ -45,13 +45,13 @@ VALUES
 ),
 (
   '22222222-2222-2222-2222-222222220004',
-  '7-Inch Jumbo Feast Gravy & Biryani Dona Bowl',
-  'Large 450ml heavy paper bowl capable of holding steaming hot biryani, noodles or soupy dishes with zero leakage.',
+  'Silver Coated Paper Dona',
+  'Premium silver laminated paper dona with fluted edges. Oil and water resistant, ideal for sweets, snacks, prasad and catering events.',
   'dona-bowls',
-  '7 Inch / 450ml (Pack of 50)',
-  'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80',
-  140.00,
-  340,
+  'Pack of 20',
+  '/products/silver-paper-dona.jpg',
+  12.00,
+  1200,
   true
 );
 
@@ -127,11 +127,11 @@ INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUE
 ('22222222-2222-2222-2222-222222220003', 10, 49, 54.00),
 ('22222222-2222-2222-2222-222222220003', 50, NULL, 45.00);
 
--- 7-inch Jumbo Feast Dona (Base: 140)
+-- Silver Coated Paper Dona (Base: 12)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('22222222-2222-2222-2222-222222220004', 1, 9, 140.00),
-('22222222-2222-2222-2222-222222220004', 10, 49, 120.00),
-('22222222-2222-2222-2222-222222220004', 50, NULL, 105.00);
+('22222222-2222-2222-2222-222222220004', 1, 9, 12.00),
+('22222222-2222-2222-2222-222222220004', 10, 49, 10.00),
+('22222222-2222-2222-2222-222222220004', 50, NULL, 9.00);
 
 -- 30x30 cm Soft Table Napkins (Base: 85)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES

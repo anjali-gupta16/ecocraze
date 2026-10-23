@@ -3,7 +3,7 @@ import { SEED_PRODUCTS } from './productsData';
 import { safeUUID } from './uuid';
 import type { Product, Order, OrderItem, TrackingEvent, BulkTier } from '../types';
 
-const LOCAL_PRODUCTS_KEY = 'pc_local_products_v8';
+const LOCAL_PRODUCTS_KEY = 'pc_local_products_v9';
 const LOCAL_ORDERS_KEY = 'pc_local_orders';
 const LOCAL_EVENTS_KEY = 'pc_local_events';
 const LOCAL_USED_UTRS_KEY = 'pc_used_utrs';
@@ -50,7 +50,7 @@ export function isUTRUsed(utr: string): boolean {
 function getLocalProducts(): Product[] {
   try {
     // Purge outdated caches from earlier versions
-    ['pc_local_products', 'pc_local_products_v1', 'pc_local_products_v2', 'pc_local_products_v3', 'pc_local_products_v4', 'pc_local_products_v5', 'pc_local_products_v6', 'pc_local_products_v7'].forEach((k) => {
+    ['pc_local_products', 'pc_local_products_v1', 'pc_local_products_v2', 'pc_local_products_v3', 'pc_local_products_v4', 'pc_local_products_v5', 'pc_local_products_v6', 'pc_local_products_v7', 'pc_local_products_v8'].forEach((k) => {
       try { localStorage.removeItem(k); } catch {}
     });
 
