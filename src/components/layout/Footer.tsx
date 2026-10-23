@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
             <p className="text-primary-200 text-sm leading-relaxed">
               India's trusted platform for eco-friendly disposable tableware.
-              Premium paper plates, dona bowls, and tissue papers at wholesale prices.
+              Premium dona bowls and tissue papers at wholesale prices.
             </p>
           </div>
 
@@ -27,7 +27,6 @@ export default function Footer() {
             <ul className="space-y-2">
               {[
                 { to: '/products', label: 'All Products' },
-                { to: '/products?category=paper-plates', label: 'Paper Plates' },
                 { to: '/products?category=dona-bowls', label: 'Dona Bowls' },
                 { to: '/products?category=tissue-papers', label: 'Tissue Papers' },
               ].map((link) => (

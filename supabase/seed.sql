@@ -7,55 +7,7 @@
 DELETE FROM public.bulk_pricing;
 DELETE FROM public.products;
 
--- 1. PAPER PLATES CATEGORY
-INSERT INTO public.products (id, name, description, category, size, image_url, price, stock, active)
-VALUES
-(
-  '11111111-1111-1111-1111-111111110001',
-  '12-Inch Heavy Duty Silver Laminated Paper Plates',
-  'Extra strong 250 GSM silver coated plates, oil and water leak-proof. Ideal for catering, parties, wedding feasts and outdoor dining.',
-  'paper-plates',
-  '12 Inch (Pack of 50)',
-  'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=600&q=80',
-  180.00,
-  450,
-  true
-),
-(
-  '11111111-1111-1111-1111-111111110002',
-  '10-Inch Premium White Bagasse Eco Round Plates',
-  'Compostable sugarcane pulp (bagasse) biodegradable dinner plates. Microwave safe, sturdy and 100% tree-free.',
-  'paper-plates',
-  '10 Inch (Pack of 50)',
-  'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80',
-  210.00,
-  380,
-  true
-),
-(
-  '11111111-1111-1111-1111-111111110003',
-  '7-Inch Bio Snack & Breakfast Paper Plates',
-  'Lightweight yet rigid 150 GSM kraft base paper snack plates. Perfect for samosas, chaat, sandwiches and sweets.',
-  'paper-plates',
-  '7 Inch (Pack of 100)',
-  'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=600&q=80',
-  120.00,
-  600,
-  true
-),
-(
-  '11111111-1111-1111-1111-111111110004',
-  '11-Inch 3-Compartment Thali Paper Plates',
-  'Heavy duty divided meal thali plate with 3 food sections. Keeps curries, rice and breads segregated without sogginess.',
-  'paper-plates',
-  '11 Inch (Pack of 50)',
-  'https://images.unsplash.com/photo-1615719413546-198b25453f85?auto=format&fit=crop&w=600&q=80',
-  240.00,
-  250,
-  true
-);
-
--- 2. DONA BOWLS CATEGORY
+-- 1. DONA BOWLS CATEGORY
 INSERT INTO public.products (id, name, description, category, size, image_url, price, stock, active)
 VALUES
 (
@@ -156,29 +108,6 @@ VALUES
 -- Tiers: 1-9 (Base), 10-49 (10-15% discount), 50+ (20-25% discount)
 -- ============================================================
 
--- 12-inch Silver Plates (Base: 180)
-INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('11111111-1111-1111-1111-111111110001', 1, 9, 180.00),
-('11111111-1111-1111-1111-111111110001', 10, 49, 155.00),
-('11111111-1111-1111-1111-111111110001', 50, NULL, 135.00);
-
--- 10-inch White Bagasse (Base: 210)
-INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('11111111-1111-1111-1111-111111110002', 1, 9, 210.00),
-('11111111-1111-1111-1111-111111110002', 10, 49, 185.00),
-('11111111-1111-1111-1111-111111110002', 50, NULL, 160.00);
-
--- 7-inch Snack Plates (Base: 120)
-INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('11111111-1111-1111-1111-111111110003', 1, 9, 120.00),
-('11111111-1111-1111-1111-111111110003', 10, 49, 102.00),
-('11111111-1111-1111-1111-111111110003', 50, NULL, 88.00);
-
--- 11-inch 3-Compartment Thali (Base: 240)
-INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('11111111-1111-1111-1111-111111110004', 1, 9, 240.00),
-('11111111-1111-1111-1111-111111110004', 10, 49, 205.00),
-('11111111-1111-1111-1111-111111110004', 50, NULL, 180.00);
 
 -- 6-inch Curry Dona (Base: 110)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES

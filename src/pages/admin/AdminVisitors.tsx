@@ -222,7 +222,7 @@ export default function AdminVisitors() {
                 {[
                   { path: '/', label: 'Home Page', views: 420, share: '38%' },
                   { path: '/products', label: 'Catalog / All Products', views: 310, share: '28%' },
-                  { path: '/products?category=paper-plates', label: 'Paper Plates', views: 180, share: '16%' },
+                  { path: '/products?category=dona-bowls', label: 'Dona Bowls', views: 180, share: '16%' },
                   { path: '/cart', label: 'Cart Page', views: 120, share: '11%' },
                   { path: '/contact', label: 'Wholesale Inquiry / Contact', views: 80, share: '7%' },
                 ].map((p, idx) => (

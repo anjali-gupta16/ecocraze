@@ -41,7 +41,7 @@ export default function AdminProducts() {
   }>({
     name: '',
     description: '',
-    category: 'paper-plates',
+    category: 'dona-bowls',
     size: '',
     image_url: '',
     price: 150,
@@ -71,9 +71,9 @@ export default function AdminProducts() {
     setFormData({
       name: '',
       description: '',
-      category: 'paper-plates',
-      size: '10 Inch (Pack of 50)',
-      image_url: '/paper-plates-collection.png',
+      category: 'dona-bowls',
+      size: '6 Inch (Pack of 100)',
+      image_url: '/products/colorful-dona-bowls.jpg',
       price: 150,
       stock: 500,
       active: true,
@@ -187,7 +187,6 @@ export default function AdminProducts() {
               className="w-full py-2 px-3 text-xs sm:text-sm rounded-lg border border-border bg-slate-50 font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="all">All Categories</option>
-              <option value="paper-plates">Paper Plates</option>
               <option value="dona-bowls">Dona Bowls</option>
               <option value="tissue-papers">Tissue Papers</option>
             </select>
@@ -357,7 +356,6 @@ export default function AdminProducts() {
                   onChange={(e) => setFormData({ ...formData, category: e.target.value as Category })}
                   className="w-full py-2.5 px-3 rounded-lg border border-border bg-white text-xs font-medium focus:ring-2 focus:ring-primary-500"
                 >
-                  <option value="paper-plates">Paper Plates</option>
                   <option value="dona-bowls">Dona Bowls</option>
                   <option value="tissue-papers">Tissue Papers</option>
                 </select>

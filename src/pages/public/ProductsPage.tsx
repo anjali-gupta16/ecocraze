@@ -24,7 +24,6 @@ export default function ProductsPage() {
 
   const categories: { key: string; label: string }[] = [
     { key: 'all', label: 'All Products' },
-    { key: 'paper-plates', label: 'Paper Plates & Thalis' },
     { key: 'dona-bowls', label: 'Paper Dona Bowls' },
     { key: 'tissue-papers', label: 'Tissue Papers & Rolls' },
   ];

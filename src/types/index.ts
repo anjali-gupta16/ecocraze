@@ -1,4 +1,4 @@
-export type Category = 'paper-plates' | 'dona-bowls' | 'tissue-papers';
+export type Category = 'dona-bowls' | 'tissue-papers';
 
 export interface Product {
   id: string;

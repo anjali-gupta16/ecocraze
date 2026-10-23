@@ -1,77 +1,7 @@
 import type { Product } from '../types';
 
 export const SEED_PRODUCTS: Product[] = [
-  // 1. PAPER PLATES
-  {
-    id: '11111111-1111-1111-1111-111111110001',
-    name: '12-Inch Heavy Duty Silver Laminated Paper Plates',
-    description: 'Extra strong 250 GSM silver coated plates, oil and water leak-proof. Ideal for catering, parties, wedding feasts and outdoor dining.',
-    category: 'paper-plates',
-    size: '12 Inch (Pack of 50)',
-    image_url: '/products/silver-paper-plates.jpg',
-    price: 180.00,
-    stock: 450,
-    active: true,
-    created_at: new Date().toISOString(),
-    bulk_pricing: [
-      { product_id: '11111111-1111-1111-1111-111111110001', min_qty: 1, max_qty: 9, unit_price: 180.00 },
-      { product_id: '11111111-1111-1111-1111-111111110001', min_qty: 10, max_qty: 49, unit_price: 155.00 },
-      { product_id: '11111111-1111-1111-1111-111111110001', min_qty: 50, max_qty: null, unit_price: 135.00 },
-    ],
-  },
-  {
-    id: '11111111-1111-1111-1111-111111110002',
-    name: '10-Inch Premium White Bagasse Eco Round Plates',
-    description: 'Compostable sugarcane pulp (bagasse) biodegradable dinner plates. Microwave safe, sturdy and 100% tree-free.',
-    category: 'paper-plates',
-    size: '10 Inch (Pack of 50)',
-    image_url: '/products/white-bagasse-plates.jpg',
-    price: 210.00,
-    stock: 380,
-    active: true,
-    created_at: new Date().toISOString(),
-    bulk_pricing: [
-      { product_id: '11111111-1111-1111-1111-111111110002', min_qty: 1, max_qty: 9, unit_price: 210.00 },
-      { product_id: '11111111-1111-1111-1111-111111110002', min_qty: 10, max_qty: 49, unit_price: 185.00 },
-      { product_id: '11111111-1111-1111-1111-111111110002', min_qty: 50, max_qty: null, unit_price: 160.00 },
-    ],
-  },
-  {
-    id: '11111111-1111-1111-1111-111111110003',
-    name: '7-Inch Bio Snack & Breakfast Paper Plates',
-    description: 'Lightweight yet rigid 150 GSM kraft base paper snack plates. Perfect for samosas, chaat, sandwiches and sweets.',
-    category: 'paper-plates',
-    size: '7 Inch (Pack of 100)',
-    image_url: '/products/kraft-snack-plates.jpg',
-    price: 120.00,
-    stock: 600,
-    active: true,
-    created_at: new Date().toISOString(),
-    bulk_pricing: [
-      { product_id: '11111111-1111-1111-1111-111111110003', min_qty: 1, max_qty: 9, unit_price: 120.00 },
-      { product_id: '11111111-1111-1111-1111-111111110003', min_qty: 10, max_qty: 49, unit_price: 102.00 },
-      { product_id: '11111111-1111-1111-1111-111111110003', min_qty: 50, max_qty: null, unit_price: 88.00 },
-    ],
-  },
-  {
-    id: '11111111-1111-1111-1111-111111110004',
-    name: '11-Inch 3-Compartment Thali Paper Plates',
-    description: 'Heavy duty divided meal thali plate with 3 food sections. Keeps curries, rice and breads segregated without sogginess.',
-    category: 'paper-plates',
-    size: '11 Inch (Pack of 50)',
-    image_url: '/products/thali-compartment-plates.jpg',
-    price: 240.00,
-    stock: 250,
-    active: true,
-    created_at: new Date().toISOString(),
-    bulk_pricing: [
-      { product_id: '11111111-1111-1111-1111-111111110004', min_qty: 1, max_qty: 9, unit_price: 240.00 },
-      { product_id: '11111111-1111-1111-1111-111111110004', min_qty: 10, max_qty: 49, unit_price: 205.00 },
-      { product_id: '11111111-1111-1111-1111-111111110004', min_qty: 50, max_qty: null, unit_price: 180.00 },
-    ],
-  },
-
-  // 2. DONA BOWLS
+  // 1. DONA BOWLS
   {
     id: '22222222-2222-2222-2222-222222220001',
     name: '6-Inch Deep Paper Dona Bowls (Assorted Colors)',
@@ -141,7 +71,7 @@ export const SEED_PRODUCTS: Product[] = [
     ],
   },
 
-  // 3. TISSUE PAPERS
+  // 2. TISSUE PAPERS
   {
     id: '33333333-3333-3333-3333-333333330001',
     name: '30x30 cm 2-Ply Ultra Soft White Table Napkins',

@@ -50,9 +50,9 @@ export default function HomePage() {
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-text-primary tracking-tight leading-[1.15]">
                 Direct Wholesale for{' '}
                 <span className="text-primary-600 underline decoration-primary-200 decoration-wavy underline-offset-8">
-                  Paper Plates
+                  Dona Bowls
                 </span>
-                , Dona Bowls & Tissues
+                {' '}& Tissues
               </h1>
 
               <p className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-2xl">
@@ -100,8 +100,8 @@ export default function HomePage() {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden border-2 border-primary-200/60 shadow-2xl bg-white p-3">
                 <img
-                  src="/paper-plates-collection.png"
-                  alt="Ecocraze Paper Plates and Tableware Collection"
+                  src="/products/colorful-dona-bowls.jpg"
+                  alt="Ecocraze Dona Bowls and Tableware Collection"
                   className="rounded-2xl w-full h-[380px] object-cover object-center"
                 />
 
@@ -141,14 +141,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <CategoryCard
-            category="paper-plates"
-            title="Paper Plates & Thalis"
-            subtitle="Silver laminated, kraft round, and 3-compartment heavy feast plates (7 to 12 inches)."
-            itemCount="4 Products"
-            imageUrl="/paper-plates-collection.png"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CategoryCard
             category="dona-bowls"
             title="Paper Dona Bowls"
@@ -234,7 +227,7 @@ export default function HomePage() {
             </h2>
           </div>
           <Link to="/products" className="text-sm font-bold text-primary-600 hover:text-primary-700 flex items-center gap-1">
-            <span>View All 12 Products</span>
+            <span>View All 8 Products</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
