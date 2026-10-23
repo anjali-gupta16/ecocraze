@@ -172,9 +172,13 @@ export default function AdminOverview() {
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                         o.payment_status === 'paid'
                           ? 'bg-emerald-100 text-emerald-800'
+                          : o.payment_status === 'verification_pending'
+                          ? 'bg-amber-100 text-amber-800'
+                          : o.payment_status === 'failed'
+                          ? 'bg-red-100 text-red-800'
                           : 'bg-amber-100 text-amber-800'
                       }`}>
-                        {o.payment_status}
+                        {o.payment_status === 'verification_pending' ? 'UTR PENDING' : o.payment_status}
                       </span>
                     </td>
                   </tr>

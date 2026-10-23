@@ -6,6 +6,45 @@ import type { Product, Order, OrderItem, TrackingEvent, BulkTier } from '../type
 const LOCAL_PRODUCTS_KEY = 'pc_local_products_v5';
 const LOCAL_ORDERS_KEY = 'pc_local_orders';
 const LOCAL_EVENTS_KEY = 'pc_local_events';
+const LOCAL_USED_UTRS_KEY = 'pc_used_utrs';
+
+// ----------------- UTR DEDUPLICATION -----------------
+
+export function getUsedUTRs(): string[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_USED_UTRS_KEY);
+    const list: string[] = raw ? JSON.parse(raw) : [];
+    // Also include any UTRs present in existing orders
+    const orders = getLocalOrders();
+    orders.forEach((o) => {
+      if (o.utr_number) {
+        const norm = o.utr_number.trim().toUpperCase();
+        if (!list.includes(norm)) list.push(norm);
+      }
+    });
+    return list;
+  } catch {
+    return [];
+  }
+}
+
+function addUsedUTR(utr: string) {
+  try {
+    const utrs = getUsedUTRs();
+    const normalized = utr.trim().toUpperCase();
+    if (!utrs.includes(normalized)) {
+      utrs.push(normalized);
+      localStorage.setItem(LOCAL_USED_UTRS_KEY, JSON.stringify(utrs));
+    }
+  } catch (e) {
+    console.error('Error saving used UTR', e);
+  }
+}
+
+export function isUTRUsed(utr: string): boolean {
+  const normalized = utr.trim().toUpperCase();
+  return getUsedUTRs().includes(normalized);
+}
 
 // Initialize local storage products and auto-heal stale/broken cached products
 function getLocalProducts(): Product[] {
@@ -180,7 +219,8 @@ export async function createOrder(orderPayload: {
   pincode: string;
   phone: string;
   payment_method: 'razorpay' | 'cod' | 'upi_qr';
-  payment_status: 'pending' | 'paid';
+  payment_status: 'pending' | 'paid' | 'verification_pending';
+  utr_number?: string;
   items: { product: Product; quantity: number; unit_price: number }[];
 }): Promise<Order> {
   const orderId = safeUUID();
@@ -194,10 +234,11 @@ export async function createOrder(orderPayload: {
     state: orderPayload.state,
     pincode: orderPayload.pincode,
     phone: orderPayload.phone,
-    order_status: 'confirmed',
+    order_status: orderPayload.payment_status === 'verification_pending' ? 'pending' : 'confirmed',
     payment_status: orderPayload.payment_status,
     payment_method: orderPayload.payment_method,
     created_at: new Date().toISOString(),
+    utr_number: orderPayload.utr_number || undefined,
     order_items: orderPayload.items.map((i) => ({
       id: safeUUID(),
       order_id: orderId,
@@ -259,6 +300,11 @@ export async function createOrder(orderPayload: {
   // Save to local storage for instant sync and offline reliability
   const currentOrders = getLocalOrders();
   saveLocalOrders([order, ...currentOrders]);
+
+  // Record UTR in the used-UTRs ledger to prevent reuse
+  if (orderPayload.utr_number) {
+    addUsedUTR(orderPayload.utr_number);
+  }
 
   return order;
 }

@@ -44,10 +44,19 @@ export default function AdminOrders() {
   };
 
   const handlePaymentConfirm = async (orderId: string) => {
-    await updateOrder(orderId, { payment_status: 'paid' });
+    await updateOrder(orderId, { payment_status: 'paid', order_status: 'confirmed' });
     fetchOrderList();
     if (selectedOrder && selectedOrder.id === orderId) {
-      setSelectedOrder({ ...selectedOrder, payment_status: 'paid' });
+      setSelectedOrder({ ...selectedOrder, payment_status: 'paid', order_status: 'confirmed' });
+    }
+  };
+
+  const handlePaymentReject = async (orderId: string) => {
+    if (!window.confirm('Reject this UTR? The payment will be marked as failed and the order will be cancelled.')) return;
+    await updateOrder(orderId, { payment_status: 'failed', order_status: 'cancelled' });
+    fetchOrderList();
+    if (selectedOrder && selectedOrder.id === orderId) {
+      setSelectedOrder({ ...selectedOrder, payment_status: 'failed', order_status: 'cancelled' });
     }
   };
 
@@ -129,6 +138,7 @@ export default function AdminOrders() {
             >
               <option value="all">All Payment Statuses</option>
               <option value="paid">Paid</option>
+              <option value="verification_pending">UTR Verification Pending</option>
               <option value="pending">Pending</option>
               <option value="refunded">Refunded</option>
               <option value="failed">Failed</option>
@@ -199,14 +209,23 @@ export default function AdminOrders() {
                               ? 'bg-emerald-100 text-emerald-800'
                               : o.payment_status === 'refunded'
                               ? 'bg-purple-100 text-purple-800'
+                              : o.payment_status === 'verification_pending'
+                              ? 'bg-amber-100 text-amber-800 animate-pulse'
+                              : o.payment_status === 'failed'
+                              ? 'bg-red-100 text-red-800'
                               : 'bg-amber-100 text-amber-800'
                           }`}
                         >
-                          {o.payment_status}
+                          {o.payment_status === 'verification_pending' ? 'UTR PENDING' : o.payment_status}
                         </span>
                         <span className="text-[10px] font-medium text-text-light uppercase">
                           {o.payment_method}
                         </span>
+                        {o.utr_number && (
+                          <span className="text-[10px] font-mono text-primary-700 bg-primary-50 px-1.5 py-0.5 rounded">
+                            UTR: {o.utr_number}
+                          </span>
+                        )}
                       </div>
                     </td>
 
@@ -235,7 +254,28 @@ export default function AdminOrders() {
                         Inspect
                       </Button>
 
-                      {o.payment_status !== 'paid' && o.order_status !== 'cancelled' && (
+                      {o.payment_status === 'verification_pending' && (
+                        <>
+                          <Button
+                            onClick={() => handlePaymentConfirm(o.id)}
+                            variant="secondary"
+                            size="sm"
+                            className="h-7 text-[11px] text-emerald-700 border-emerald-600 hover:bg-emerald-50"
+                          >
+                            ✓ Verify UTR
+                          </Button>
+                          <Button
+                            onClick={() => handlePaymentReject(o.id)}
+                            variant="outline"
+                            size="sm"
+                            className="h-7 text-[11px] text-red-600 hover:bg-red-50"
+                          >
+                            ✗ Reject
+                          </Button>
+                        </>
+                      )}
+
+                      {o.payment_status !== 'paid' && o.payment_status !== 'verification_pending' && o.order_status !== 'cancelled' && (
                         <Button
                           onClick={() => handlePaymentConfirm(o.id)}
                           variant="secondary"
@@ -289,10 +329,26 @@ export default function AdminOrders() {
                   ₹{selectedOrder.total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                 </p>
                 <p className="text-text-secondary mt-1">Method: {selectedOrder.payment_method.toUpperCase()}</p>
+                {selectedOrder.utr_number && (
+                  <p className="mt-1">
+                    UTR:{' '}
+                    <span className="font-mono font-bold text-primary-700 bg-primary-50 px-1.5 py-0.5 rounded">
+                      {selectedOrder.utr_number}
+                    </span>
+                  </p>
+                )}
                 <p className="mt-0.5">
                   Payment Status:{' '}
-                  <span className="font-bold uppercase text-emerald-700">
-                    {selectedOrder.payment_status}
+                  <span className={`font-bold uppercase ${
+                    selectedOrder.payment_status === 'verification_pending'
+                      ? 'text-amber-700'
+                      : selectedOrder.payment_status === 'paid'
+                      ? 'text-emerald-700'
+                      : selectedOrder.payment_status === 'failed'
+                      ? 'text-red-700'
+                      : 'text-emerald-700'
+                  }`}>
+                    {selectedOrder.payment_status === 'verification_pending' ? 'VERIFICATION PENDING' : selectedOrder.payment_status}
                   </span>
                 </p>
                 <p className="mt-0.5">
@@ -327,6 +383,26 @@ export default function AdminOrders() {
             </div>
 
             <div className="pt-2 flex justify-end gap-2">
+              {selectedOrder.payment_status === 'verification_pending' && (
+                <>
+                  <Button
+                    onClick={() => { handlePaymentConfirm(selectedOrder.id); setSelectedOrder(null); }}
+                    variant="primary"
+                    size="sm"
+                    className="text-emerald-50 bg-emerald-600 hover:bg-emerald-700"
+                  >
+                    ✓ Verify & Confirm Payment
+                  </Button>
+                  <Button
+                    onClick={() => { handlePaymentReject(selectedOrder.id); setSelectedOrder(null); }}
+                    variant="outline"
+                    size="sm"
+                    className="text-red-600 hover:bg-red-50"
+                  >
+                    ✗ Reject UTR
+                  </Button>
+                </>
+              )}
               <Button onClick={() => setSelectedOrder(null)} variant="primary" size="sm">
                 Close
               </Button>

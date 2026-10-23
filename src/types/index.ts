@@ -39,7 +39,7 @@ export interface Profile {
 }
 
 export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded' | 'verification_pending';
 export type PaymentMethod = 'razorpay' | 'cod' | 'upi_qr';
 
 export interface Order {
@@ -57,6 +57,7 @@ export interface Order {
   payment_status: PaymentStatus;
   payment_method: PaymentMethod;
   created_at: string;
+  utr_number?: string;
   order_items?: OrderItem[];
   profiles?: Profile;
 }

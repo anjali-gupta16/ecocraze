@@ -170,14 +170,16 @@ export default function AccountPage() {
                         <p className="text-text-light font-medium">Status</p>
                         <span
                           className={`inline-block mt-0.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase ${
-                            order.order_status === 'delivered'
+                            order.payment_status === 'verification_pending'
+                              ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                              : order.order_status === 'delivered'
                               ? 'bg-emerald-100 text-emerald-800'
                               : order.order_status === 'cancelled'
                               ? 'bg-red-100 text-red-800'
                               : 'bg-primary-50 text-primary-800 border border-primary-200'
                           }`}
                         >
-                          {order.order_status}
+                          {order.payment_status === 'verification_pending' ? 'Verification Pending' : order.order_status}
                         </span>
                       </div>
                     </div>
@@ -284,8 +286,27 @@ export default function AccountPage() {
                           </p>
                           <p className="text-text-secondary uppercase">{order.payment_method}</p>
                           <p className="text-text-muted mt-1">
-                            Payment status: <span className="font-bold capitalize">{order.payment_status}</span>
+                            Payment status:{' '}
+                            <span className={`font-bold capitalize ${
+                              order.payment_status === 'verification_pending'
+                                ? 'text-amber-700'
+                                : order.payment_status === 'paid'
+                                ? 'text-emerald-700'
+                                : ''
+                            }`}>
+                              {order.payment_status === 'verification_pending'
+                                ? 'Verification Pending (UTR Submitted)'
+                                : order.payment_status}
+                            </span>
                           </p>
+                          {order.utr_number && (
+                            <p className="text-text-muted mt-1">
+                              UTR:{' '}
+                              <span className="font-mono font-bold text-slate-800">
+                                {order.utr_number}
+                              </span>
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

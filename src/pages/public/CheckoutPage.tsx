@@ -11,11 +11,13 @@ import {
   Copy,
   Check,
   CheckCircle2,
+  Clock,
+  AlertTriangle,
 } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTracking } from '../../hooks/useTracking';
-import { createOrder, getProducts } from '../../lib/store';
+import { createOrder, getProducts, isUTRUsed } from '../../lib/store';
 import { sendAllOrderNotifications } from '../../lib/notifications';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
@@ -42,7 +44,7 @@ export default function CheckoutPage() {
   const [upiRef, setUpiRef] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [verifyingStep, setVerifyingStep] = useState<'idle' | 'verifying' | 'success'>('idle');
+  const [verifyingStep, setVerifyingStep] = useState<'idle' | 'submitting' | 'pending'>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const shippingFee = subtotal >= 999 || subtotal === 0 ? 0 : 99;
@@ -95,12 +97,21 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Start automated payment verification animation
-    setVerifyingStep('verifying');
+    // Reject previously used UTRs
+    if (isUTRUsed(trimmedRef)) {
+      setErrors((prev) => ({
+        ...prev,
+        upiRef: 'This UTR / Transaction Reference has already been used for a previous order. Please enter a new UTR from your latest payment.',
+      }));
+      return;
+    }
+
+    // Start submission animation
+    setVerifyingStep('submitting');
     setLoading(true);
 
     try {
-      // Create order with UPI QR Scanner payment
+      // Create order with verification_pending status — admin must verify
       const order = await createOrder({
         user_id: user?.id,
         customer_name: formData.name,
@@ -112,7 +123,8 @@ export default function CheckoutPage() {
         pincode: formData.pincode,
         phone: formData.phone,
         payment_method: 'upi_qr',
-        payment_status: 'paid',
+        payment_status: 'verification_pending',
+        utr_number: trimmedRef,
         items,
       });
 
@@ -129,13 +141,13 @@ export default function CheckoutPage() {
         trackingId: `TRK-ECO-${order.id.slice(0, 8).toUpperCase()}`,
       });
 
-      // Quick flash: verify → success → redirect
+      // Flash: submitting → pending → redirect
       setTimeout(() => {
-        setVerifyingStep('success');
+        setVerifyingStep('pending');
         setTimeout(() => {
           navigate(`/order-confirmation/${order.id}`);
-        }, 400);
-      }, 500);
+        }, 1200);
+      }, 800);
     } catch (err: any) {
       console.error('Order placement error:', err);
       alert('An error occurred while placing your order. Please try again.');
@@ -363,6 +375,15 @@ export default function CheckoutPage() {
                   <p>After paying, enter the <strong>12-digit UTR / Transaction Reference</strong> from your payment receipt below <strong className="text-red-600">(Required)</strong>.</p>
                 </div>
 
+                {/* Verification Notice */}
+                <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2.5">
+                  <Clock className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                  <div className="text-xs text-amber-800">
+                    <p className="font-bold">Payment Verification Required</p>
+                    <p className="mt-0.5 text-amber-700">Your UTR will be verified by our admin team before the order is confirmed. The order will remain in <strong>"Verification Pending"</strong> status until approved.</p>
+                  </div>
+                </div>
+
                 <div className="pt-2">
                   <Input
                     label="UPI Transaction / UTR Number (Required)"
@@ -375,7 +396,7 @@ export default function CheckoutPage() {
                     }}
                     error={errors.upiRef}
                     required
-                    helperText="Enter UTR from your payment receipt — verification will only proceed after payment proof"
+                    helperText="Enter UTR from your payment receipt — admin will verify before confirming your order"
                   />
                 </div>
               </div>
@@ -443,10 +464,10 @@ export default function CheckoutPage() {
                 icon={<CheckCircle2 className="w-5 h-5 mr-1" />}
               >
                 {loading
-                  ? 'Verifying Payment...'
+                  ? 'Submitting for Verification...'
                   : !upiRef.trim()
                   ? 'Enter UTR Number to Proceed'
-                  : `Verify Payment ₹${grandTotal.toFixed(0)} & Track Order`}
+                  : `Submit UTR ₹${grandTotal.toFixed(0)} for Verification`}
               </Button>
 
               <div className="mt-4 flex items-center justify-center gap-2 text-[11px] text-text-light">
@@ -457,37 +478,41 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* Automatic Payment Verification & Live Tracking Redirect Overlay */}
+        {/* Payment Submission & Verification Pending Overlay */}
         {verifyingStep !== 'idle' && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border border-border animate-in fade-in zoom-in-95">
-              {verifyingStep === 'verifying' ? (
+              {verifyingStep === 'submitting' ? (
                 <div className="space-y-4">
                   <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto" />
                   <h3 className="text-xl font-extrabold text-text-primary">
-                    Verifying UPI Payment...
+                    Submitting UTR for Verification...
                   </h3>
                   <p className="text-xs text-text-muted leading-relaxed">
-                    Connecting with Karur Vysya Bank UPI Gateway to confirm transaction of <strong className="text-emerald-700 font-bold text-sm">₹{grandTotal.toFixed(2)}</strong> paid to <strong className="text-slate-800">Anshuman Gupta</strong>.
+                    Recording your UTR <strong className="text-slate-800 font-mono">{upiRef.trim()}</strong> for payment of <strong className="text-emerald-700 font-bold text-sm">₹{grandTotal.toFixed(2)}</strong> to <strong className="text-slate-800">Anshuman Gupta</strong>.
                   </p>
                   <div className="p-3 bg-slate-50 rounded-xl text-[11px] text-slate-600 border border-slate-200 flex items-center justify-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span>Checking UPI receipt status...</span>
+                    <span>Creating order and recording UTR...</span>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-4 animate-in fade-in zoom-in-95">
-                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto ring-8 ring-emerald-50">
-                    <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
+                  <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto ring-8 ring-amber-50">
+                    <Clock className="w-10 h-10 stroke-[2]" />
                   </div>
-                  <h3 className="text-xl font-extrabold text-emerald-800">
-                    Payment Verified Successfully!
+                  <h3 className="text-xl font-extrabold text-amber-800">
+                    Payment Verification Pending
                   </h3>
-                  <p className="text-xs text-text-muted">
-                    ₹{grandTotal.toFixed(2)} received. Automatically opening your live order tracking page now...
+                  <p className="text-xs text-text-muted leading-relaxed">
+                    Your UTR <strong className="text-slate-800 font-mono">{upiRef.trim()}</strong> has been submitted. Our admin team will verify your payment of <strong className="text-emerald-700 font-bold">₹{grandTotal.toFixed(2)}</strong> and confirm your order shortly.
                   </p>
-                  <div className="w-full bg-emerald-100 rounded-full h-1.5 overflow-hidden">
-                    <div className="bg-emerald-600 h-1.5 rounded-full animate-pulse w-full"></div>
+                  <div className="p-3 bg-amber-50 rounded-xl text-[11px] text-amber-700 border border-amber-200 flex items-center justify-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Order will be confirmed after admin verification</span>
+                  </div>
+                  <div className="w-full bg-amber-100 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-amber-500 h-1.5 rounded-full animate-pulse w-full"></div>
                   </div>
                 </div>
               )}

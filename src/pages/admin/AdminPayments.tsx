@@ -36,7 +36,7 @@ export default function AdminPayments() {
 
   // 3. Pending Revenue
   const pendingRevenue = orders
-    .filter((o) => o.payment_status === 'pending')
+    .filter((o) => o.payment_status === 'pending' || o.payment_status === 'verification_pending')
     .reduce((sum, o) => sum + o.total, 0) || 78500;
 
   // 4. Refunds
@@ -54,13 +54,18 @@ export default function AdminPayments() {
   // Payments transactions table
   const transactions = orders.map((o) => ({
     id: o.id,
-    gateway_ref: o.payment_method === 'razorpay' ? `rzp_pay_${o.id.slice(0, 8)}` : `COD-${o.id.slice(0, 6).toUpperCase()}`,
+    gateway_ref: o.payment_method === 'upi_qr'
+      ? (o.utr_number || `UPI_${o.id.slice(0, 8).toUpperCase()}`)
+      : o.payment_method === 'razorpay'
+      ? `rzp_pay_${o.id.slice(0, 8)}`
+      : `COD-${o.id.slice(0, 6).toUpperCase()}`,
     customer_name: o.customer_name || 'Wholesale Client',
     order_value: o.total,
     collected_revenue: o.payment_status === 'paid' ? o.total : 0,
     refunded_amount: o.payment_status === 'refunded' ? o.total : 0,
     payment_status: o.payment_status,
     payment_method: o.payment_method,
+    utr_number: o.utr_number,
     created_at: o.created_at,
   }));
 
@@ -193,21 +198,23 @@ export default function AdminPayments() {
                       ? `₹${tx.refunded_amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`
                       : '—'}
                   </td>
-                  <td className="py-3 px-3">
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                        tx.payment_status === 'paid'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : tx.payment_status === 'refunded'
-                          ? 'bg-purple-100 text-purple-800'
-                          : tx.payment_status === 'failed'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-amber-100 text-amber-800'
-                      }`}
-                    >
-                      {tx.payment_status}
-                    </span>
-                  </td>
+                    <td className="py-3 px-3">
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                          tx.payment_status === 'paid'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : tx.payment_status === 'refunded'
+                            ? 'bg-purple-100 text-purple-800'
+                            : tx.payment_status === 'failed'
+                            ? 'bg-red-100 text-red-800'
+                            : tx.payment_status === 'verification_pending'
+                            ? 'bg-amber-100 text-amber-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
+                      >
+                        {tx.payment_status === 'verification_pending' ? 'UTR PENDING' : tx.payment_status}
+                      </span>
+                    </td>
                 </tr>
               ))}
             </tbody>
