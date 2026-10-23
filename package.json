@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "git add -A && git commit -m \"auto update\" && git push origin main"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
