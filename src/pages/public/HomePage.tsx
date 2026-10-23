@@ -154,7 +154,7 @@ export default function HomePage() {
             title="Paper Dona Bowls"
             subtitle="Deep curry, chaat, and sweet bowls with leak-proof lining (100ml to 450ml jumbo sizes)."
             itemCount="4 Products"
-            imageUrl="/products/silver-dona-bowls.jpg"
+            imageUrl="/products/colorful-dona-bowls.jpg"
           />
           <CategoryCard
             category="tissue-papers"

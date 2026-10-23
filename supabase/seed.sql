@@ -64,7 +64,7 @@ VALUES
   'Deep wall silver paper dona bowls (250ml capacity). Food grade, grease resistant for hot sambar, daal and chaat items.',
   'dona-bowls',
   '6 Inch / 250ml (Pack of 100)',
-  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+  '/products/colorful-dona-bowls.jpg',
   110.00,
   800,
   true

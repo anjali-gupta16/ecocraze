@@ -74,11 +74,11 @@ export const SEED_PRODUCTS: Product[] = [
   // 2. DONA BOWLS
   {
     id: '22222222-2222-2222-2222-222222220001',
-    name: '6-Inch Deep Silver Curry & Chaat Dona Bowls',
-    description: 'Deep wall silver paper dona bowls (250ml capacity). Food grade, grease resistant for hot sambar, daal and chaat items.',
+    name: '6-Inch Deep Paper Dona Bowls (Assorted Colors)',
+    description: 'Deep wall food-grade paper dona bowls (250ml capacity) in assorted colors and patterns. Grease-resistant, leak-proof for curries, chaat, snacks and catering.',
     category: 'dona-bowls',
     size: '6 Inch / 250ml (Pack of 100)',
-    image_url: '/products/silver-dona-bowls.jpg',
+    image_url: '/products/colorful-dona-bowls.jpg',
     price: 110.00,
     stock: 800,
     active: true,
