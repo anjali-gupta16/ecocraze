@@ -73,6 +73,17 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
       created_at: '2026-01-01T00:00:00.000Z',
     },
   },
+  'yashaswinim8002@gmail.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-id-2',
+      email: 'yashaswinim8002@gmail.com',
+      name: 'Yashaswini M',
+      phone: '7892280294',
+      role: 'customer',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  },
 };
 
 const LOCAL_SESSION_KEY = 'ecocraze_demo_session';

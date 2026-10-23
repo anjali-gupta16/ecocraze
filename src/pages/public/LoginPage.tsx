@@ -30,10 +30,10 @@ export default function LoginPage() {
 
     // Prefill form for convenience, but NEVER auto-submit or bypass the login screen
     if (roleParam === 'admin') {
-      setEmail('admin@ecocraze.com');
+      setEmail('anshumangupta2501@gmail.com');
       setPassword('Admin@123456');
     } else if (roleParam === 'customer') {
-      setEmail('wholesale@ecocraze.com');
+      setEmail('anjali.gupta.ashok16@gmail.com');
       setPassword('Anjali@123456');
     }
   }, [location.search]);
@@ -141,7 +141,7 @@ export default function LoginPage() {
             <Input
               label="Business Email"
               type="email"
-              placeholder="e.g. orders@yourbusiness.com"
+              placeholder="e.g. anjali.gupta.ashok16@gmail.com"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);

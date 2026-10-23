@@ -77,9 +77,9 @@ export default function Footer() {
               <li className="flex items-start gap-2">
                 <Mail className="w-4 h-4 text-primary-400 mt-0.5 shrink-0" />
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-primary-200 text-sm font-semibold">orders@ecocraze.in</span>
-                  <span className="text-primary-200 text-sm">support@ecocraze.com</span>
-                  <span className="text-primary-300 text-xs">wholesale@ecocraze.com</span>
+                  <span className="text-primary-200 text-sm">anjali.gupta.ashok16@gmail.com</span>
+                  <span className="text-primary-200 text-sm">anshumangupta2501@gmail.com</span>
+                  <span className="text-primary-200 text-sm">yashaswinim8002@gmail.com</span>
                 </div>
               </li>
             </ul>
