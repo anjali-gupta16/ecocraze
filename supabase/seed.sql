@@ -23,13 +23,13 @@ VALUES
 ),
 (
   '22222222-2222-2222-2222-222222220002',
-  '5-Inch Natural Brown Kraft Paper Dona Bowls',
-  'Eco-chic rustic brown kraft bowls. Modern aesthetic for street food vendors, cafes and corporate canteen food counters.',
+  '4-Inch Golden Paper Dona Bowls',
+  'Traditional golden kraft paper dona bowls. Heavy-duty, leak-resistant for chaat, sweets, snacks, prasad and food counters.',
   'dona-bowls',
-  '5 Inch / 180ml (Pack of 100)',
-  'https://images.unsplash.com/photo-1514944298352-7800c8f5832a?auto=format&fit=crop&w=600&q=80',
-  95.00,
-  520,
+  '4 Inch (Pack of 100)',
+  '/products/golden-dona-bowls.jpg',
+  30.00,
+  650,
   true
 ),
 (
@@ -115,11 +115,11 @@ INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUE
 ('22222222-2222-2222-2222-222222220001', 10, 49, 95.00),
 ('22222222-2222-2222-2222-222222220001', 50, NULL, 80.00);
 
--- 5-inch Kraft Dona (Base: 95)
+-- 4-inch Golden Dona (Base: 30)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('22222222-2222-2222-2222-222222220002', 1, 9, 95.00),
-('22222222-2222-2222-2222-222222220002', 10, 49, 82.00),
-('22222222-2222-2222-2222-222222220002', 50, NULL, 69.00);
+('22222222-2222-2222-2222-222222220002', 1, 9, 30.00),
+('22222222-2222-2222-2222-222222220002', 10, 49, 26.00),
+('22222222-2222-2222-2222-222222220002', 50, NULL, 22.00);
 
 -- 4-inch Chutney Dona (Base: 65)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES

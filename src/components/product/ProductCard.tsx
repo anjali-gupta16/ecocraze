@@ -78,8 +78,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           loading="lazy"
           onError={(e) => {
             const target = e.currentTarget;
-            if (!target.src.includes('plate-selection-sheet.png')) {
-              target.src = '/products/plate-selection-sheet.png';
+            if (!target.src.includes('colorful-dona-bowls.jpg')) {
+              target.src = '/products/colorful-dona-bowls.jpg';
             }
           }}
         />

@@ -240,8 +240,8 @@ export default function AccountPage() {
                                       className="w-10 h-10 rounded-lg object-cover bg-slate-50 shrink-0"
                                       onError={(e) => {
                                         const target = e.currentTarget;
-                                        if (!target.src.includes('plate-selection-sheet.png')) {
-                                          target.src = '/products/plate-selection-sheet.png';
+                                        if (!target.src.includes('colorful-dona-bowls.jpg')) {
+                                          target.src = '/products/colorful-dona-bowls.jpg';
                                         }
                                       }}
                                     />
