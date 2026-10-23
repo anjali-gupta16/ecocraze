@@ -267,21 +267,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
     }
 
-    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
-    if (hasConfig) {
-      try {
-        const { error } = await supabase.auth.signInWithPassword({ email: trimmedEmail, password });
-        if (!error) {
-          return { error: null };
-        }
-      } catch {
-        // Network / fetch error - fallback to demo accounts
-      }
-    }
-
-    // Demo Accounts Check
+    // ─── PRIORITY 1: Check built-in demo accounts FIRST ───
+    // This guarantees admin/customer roles work instantly on any environment
+    // (Vercel, localhost, offline) without depending on Supabase profile data.
     const storedUsers = getStoredUsers();
-    const allAccounts = { ...DEMO_ACCOUNTS, ...storedUsers };
+    const allAccounts = { ...storedUsers, ...DEMO_ACCOUNTS }; // DEMO_ACCOUNTS override stored duplicates
 
     const targetAccount = allAccounts[trimmedEmail];
     if (targetAccount) {
@@ -298,9 +288,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // If an unknown email is provided, check if valid demo attempt or suggest demo credentials
+    // ─── PRIORITY 2: Try Supabase for non-demo accounts ───
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email: trimmedEmail, password });
+        if (!error && data?.user) {
+          // Wait for profile to load so isAdmin is set before navigation
+          await fetchProfile(data.user.id);
+          return { error: null };
+        }
+        if (error) {
+          // Don't block — fall through to auto-create below
+        }
+      } catch {
+        // Network / fetch error - fallback to auto-create
+      }
+    }
+
+    // ─── PRIORITY 3: Auto-create session for any email with valid password ───
     if (password.length >= 6) {
-      // Auto-create customer session for easy testing
       const autoProfile: Profile = {
         id: safeUUID(),
         email: trimmedEmail,
