@@ -30,10 +30,10 @@ export default function LoginPage() {
 
     // Prefill form for convenience, but NEVER auto-submit or bypass the login screen
     if (roleParam === 'admin') {
-      setEmail('anshumangupta2501@gmail.com');
+      setEmail('admin@ecocraze.com');
       setPassword('Admin@123456');
     } else if (roleParam === 'customer') {
-      setEmail('anjali.gupta.ashok16@gmail.com');
+      setEmail('wholesale@ecocraze.com');
       setPassword('Anjali@123456');
     }
   }, [location.search]);
@@ -141,7 +141,7 @@ export default function LoginPage() {
             <Input
               label="Business Email"
               type="email"
-              placeholder="e.g. anjali.gupta.ashok16@gmail.com"
+              placeholder="e.g. orders@yourbusiness.com"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -197,13 +197,6 @@ export default function LoginPage() {
               Sign In to Account
             </Button>
           </form>
-
-          <div className="mt-6 text-center text-xs text-text-muted">
-            Don't have an account yet?{' '}
-            <Link to="/register" className="font-bold text-primary-600 hover:text-primary-700">
-              Register as Wholesaler
-            </Link>
-          </div>
         </div>
       </div>
     </div>

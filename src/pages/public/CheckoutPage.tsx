@@ -28,9 +28,9 @@ export default function CheckoutPage() {
 
   // Form State
   const [formData, setFormData] = useState({
-    name: profile?.name || 'Anjali Gupta',
-    phone: profile?.phone || '7676349773',
-    email: user?.email || 'anjali.gupta.ashok16@gmail.com',
+    name: profile?.name || '',
+    phone: profile?.phone || '',
+    email: user?.email || '',
     address: 'Koramangala 8th Block, Near Lavish Pharma',
     city: 'Bangalore',
     state: 'Karnataka',

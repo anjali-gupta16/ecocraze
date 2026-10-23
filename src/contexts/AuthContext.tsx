@@ -18,6 +18,39 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
+  'admin@ecocraze.com': {
+    password: 'Admin@123456',
+    profile: {
+      id: 'demo-admin-id',
+      email: 'admin@ecocraze.com',
+      name: 'Ecocraze Administrator',
+      phone: '7676349773',
+      role: 'admin',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  },
+  'wholesale@ecocraze.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-id',
+      email: 'wholesale@ecocraze.com',
+      name: 'Gupta Wholesale Caterers',
+      phone: '6306784568',
+      role: 'customer',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  },
+  'business@ecocraze.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-id',
+      email: 'business@ecocraze.com',
+      name: 'Ecocraze Business Partner',
+      phone: '6306784568',
+      role: 'customer',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  },
   'anshumangupta2501@gmail.com': {
     password: 'Admin@123456',
     profile: {
@@ -272,7 +305,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return {
       error: {
         message:
-          'Account not found. Use Anjali@123456 with anjali.gupta.ashok16@gmail.com, or register a new wholesale account.',
+          'Account not found. Please check your credentials or register a new wholesale account.',
       },
     };
   };

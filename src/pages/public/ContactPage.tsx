@@ -178,9 +178,9 @@ export default function ContactPage() {
               <Mail className="w-4 h-4 text-primary-600 mt-0.5 shrink-0" />
               <div>
                 <p className="font-semibold text-text-primary">B2B Commercial Desk</p>
-                <p>anjali.gupta.ashok16@gmail.com</p>
-                <p>anshumangupta2501@gmail.com</p>
-                <p>yashaswinim8002@gmail.com</p>
+                <p className="font-medium text-primary-700">orders@ecocraze.in</p>
+                <p className="font-medium text-primary-700">wholesale@ecocraze.com</p>
+                <p className="text-xs text-text-muted mt-1">support@ecocraze.com</p>
               </div>
             </div>
           </div>
