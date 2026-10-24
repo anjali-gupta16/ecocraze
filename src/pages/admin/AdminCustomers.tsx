@@ -17,7 +17,7 @@ export default function AdminCustomers() {
     { id: '2', name: 'Ananya Deshmukh', firm: 'Desi Bowls Cafe', email: 'procurement@desibowls.in', phone: '6306784568', role: 'customer', joined: '2026-09-01', ordersCount: 5, totalSpend: 28500 },
     { id: '3', name: 'Mohd. Imran', firm: 'Royal Biryani Banquet', email: 'imran.banquets@yahoo.com', phone: '7892280294', role: 'customer', joined: '2026-09-18', ordersCount: 12, totalSpend: 118000 },
     { id: '4', name: 'Vikram Mehta', firm: 'Spice Hub Kitchens', email: 'yashaswinim8002@gmail.com', phone: '9811223344', role: 'customer', joined: '2026-10-04', ordersCount: 3, totalSpend: 14200 },
-    { id: '5', name: 'Anjali Gupta (Admin)', firm: 'Ecocraze Operations', email: 'anshumangupta2501@gmail.com', phone: '7676349773', role: 'admin', joined: '2026-07-01', ordersCount: 0, totalSpend: 0 },
+    { id: '5', name: 'Anjali Gupta', firm: 'Ecocraze Operations', email: 'anshumangupta2501@gmail.com', phone: '7676349773', role: 'admin', joined: '2026-07-01', ordersCount: 0, totalSpend: 0 },
   ];
 
   const filtered = sampleCustomers.filter(

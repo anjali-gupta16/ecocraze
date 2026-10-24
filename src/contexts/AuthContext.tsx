@@ -56,7 +56,7 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
     profile: {
       id: 'demo-admin-id',
       email: 'anshumangupta2501@gmail.com',
-      name: 'Anjali Gupta (Admin)',
+      name: 'Anjali Gupta',
       phone: '7676349773',
       role: 'admin',
       created_at: '2026-01-01T00:00:00.000Z',
@@ -67,7 +67,7 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
     profile: {
       id: 'demo-admin-id-2',
       email: 'anjali.gupta.ashok16@gmail.com',
-      name: 'Anjali Gupta (Admin)',
+      name: 'Anjali Gupta',
       phone: '6306784568',
       role: 'admin',
       created_at: '2026-01-01T00:00:00.000Z',
@@ -125,6 +125,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const savedSession = localStorage.getItem(LOCAL_SESSION_KEY);
       if (savedSession) {
         const parsed = JSON.parse(savedSession);
+        if (parsed.profile?.name) {
+          parsed.profile.name = parsed.profile.name.replace(/\s*\(Admin\)/gi, '').trim();
+          try {
+            localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(parsed));
+          } catch {
+            // ignore
+          }
+        }
         setUser(parsed.user);
         setProfile(parsed.profile);
         setSession(parsed.session || null);

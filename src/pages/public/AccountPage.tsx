@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Package,
   RotateCcw,
@@ -8,7 +8,6 @@ import {
   MapPin,
   ChevronDown,
   ChevronUp,
-  Shield,
   LogOut,
   ShoppingBag,
 } from 'lucide-react';
@@ -23,7 +22,7 @@ import EmptyState from '../../components/ui/EmptyState';
 
 export default function AccountPage() {
   const navigate = useNavigate();
-  const { user, profile, signOut, isAdmin, loading: authLoading } = useAuth();
+  const { user, profile, signOut, loading: authLoading } = useAuth();
   const { addToCart } = useCart();
 
   const [orders, setOrders] = useState<Order[]>([]);
@@ -75,11 +74,6 @@ export default function AccountPage() {
               <h1 className="text-xl sm:text-2xl font-extrabold text-text-primary">
                 {profile?.name || 'Valued Wholesaler'}
               </h1>
-              {isAdmin && (
-                <span className="text-[11px] font-bold uppercase bg-primary-600 text-white px-2.5 py-0.5 rounded-full">
-                  Admin
-                </span>
-              )}
             </div>
             <p className="text-xs text-text-muted mt-0.5">{user?.email || 'Guest Account'}</p>
             {profile?.phone && <p className="text-xs text-text-muted">Ph: +91 {profile.phone}</p>}
@@ -87,13 +81,6 @@ export default function AccountPage() {
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          {isAdmin && (
-            <Link to="/admin" className="flex-1 sm:flex-none">
-              <Button variant="secondary" size="md" className="w-full gap-2 font-bold" icon={<Shield className="w-4 h-4 text-primary-600" />}>
-                Admin Panel
-              </Button>
-            </Link>
-          )}
           {user && (
             <Button
               onClick={signOut}
