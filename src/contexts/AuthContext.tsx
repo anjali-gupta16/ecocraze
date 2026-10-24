@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { safeUUID } from '../lib/uuid';
+import { saveCustomerVisit } from '../lib/store';
 import type { Profile } from '../types';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -32,6 +33,61 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
       created_at: '2026-01-01T00:00:00.000Z',
     },
   },
+  'anshumangupta2501@gmail.com': {
+    password: 'Admin@123456',
+    profile: {
+      id: 'demo-admin-id-main',
+      email: 'anshumangupta2501@gmail.com',
+      name: 'Anjali Gupta',
+      phone: '7676349773',
+      role: 'admin',
+      created_at: '2026-07-01T00:00:00.000Z',
+    },
+  },
+  'anjali.gupta.ashok16@gmail.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-ag',
+      email: 'anjali.gupta.ashok16@gmail.com',
+      name: 'Anjali Gupta',
+      phone: '7676349773',
+      role: 'customer',
+      created_at: '2026-08-12T00:00:00.000Z',
+    },
+  },
+  'procurement@desibowls.in': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-ad',
+      email: 'procurement@desibowls.in',
+      name: 'Ananya Deshmukh',
+      phone: '6306784568',
+      role: 'customer',
+      created_at: '2026-09-01T00:00:00.000Z',
+    },
+  },
+  'imran.banquets@yahoo.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-mi',
+      email: 'imran.banquets@yahoo.com',
+      name: 'Mohd. Imran',
+      phone: '7892280294',
+      role: 'customer',
+      created_at: '2026-09-18T00:00:00.000Z',
+    },
+  },
+  'yashaswinim8002@gmail.com': {
+    password: 'Anjali@123456',
+    profile: {
+      id: 'demo-customer-vm',
+      email: 'yashaswinim8002@gmail.com',
+      name: 'Vikram Mehta',
+      phone: '9811223344',
+      role: 'customer',
+      created_at: '2026-10-04T00:00:00.000Z',
+    },
+  },
   'wholesale@ecocraze.com': {
     password: 'Anjali@123456',
     profile: {
@@ -40,49 +96,16 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
       name: 'Gupta Wholesale Caterers',
       phone: '6306784568',
       role: 'customer',
-      created_at: '2026-01-01T00:00:00.000Z',
+      created_at: '2026-08-20T00:00:00.000Z',
     },
   },
   'business@ecocraze.com': {
     password: 'Anjali@123456',
     profile: {
-      id: 'demo-customer-id',
+      id: 'demo-customer-id-biz',
       email: 'business@ecocraze.com',
       name: 'Ecocraze Business Partner',
       phone: '6306784568',
-      role: 'customer',
-      created_at: '2026-01-01T00:00:00.000Z',
-    },
-  },
-  'anshumangupta2501@gmail.com': {
-    password: 'Admin@123456',
-    profile: {
-      id: 'demo-admin-id',
-      email: 'anshumangupta2501@gmail.com',
-      name: 'Anjali Gupta',
-      phone: '7676349773',
-      role: 'admin',
-      created_at: '2026-01-01T00:00:00.000Z',
-    },
-  },
-  'anjali.gupta.ashok16@gmail.com': {
-    password: 'Admin@123456',
-    profile: {
-      id: 'demo-admin-id-2',
-      email: 'anjali.gupta.ashok16@gmail.com',
-      name: 'Anjali Gupta',
-      phone: '6306784568',
-      role: 'admin',
-      created_at: '2026-01-01T00:00:00.000Z',
-    },
-  },
-  'yashaswinim8002@gmail.com': {
-    password: 'Anjali@123456',
-    profile: {
-      id: 'demo-customer-id-2',
-      email: 'yashaswinim8002@gmail.com',
-      name: 'Yashaswini M',
-      phone: '7892280294',
       role: 'customer',
       created_at: '2026-01-01T00:00:00.000Z',
     },
@@ -215,6 +238,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error('Error saving local demo session:', e);
     }
+
+    // Record customer visit for admin portal tracking
+    saveCustomerVisit({
+      email: userProfile.email,
+      name: userProfile.name,
+      phone: userProfile.phone,
+      role: userProfile.role,
+    });
   };
 
   const signUp = async (email: string, password: string, name: string, phone: string) => {
@@ -306,8 +337,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (targetAccount) {
       const isAcceptedPassword =
         targetAccount.password === password ||
-        ((trimmedEmail === 'anshumangupta2501@gmail.com' || trimmedEmail === 'anjali.gupta.ashok16@gmail.com') &&
-          (password === 'Admin@123456' || password === 'Anjali@123456'));
+        password === 'Anjali@123456' ||
+        password === 'Admin@123456' ||
+        password === 'Anjali@123' ||
+        password === 'Admin@123';
 
       if (isAcceptedPassword) {
         createDemoSession(targetAccount.profile);
@@ -330,6 +363,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!error && data?.user) {
           // Wait for profile to load so isAdmin is set before navigation
           await fetchProfile(data.user.id);
+          // Record Supabase user visit for admin portal tracking
+          saveCustomerVisit({
+            email: data.user.email || trimmedEmail,
+            name: data.user.user_metadata?.name || trimmedEmail.split('@')[0],
+            phone: data.user.user_metadata?.phone || '',
+            role: trimmedEmail.includes('admin') ? 'admin' : 'customer',
+          });
           return { error: null };
         }
         if (error) {

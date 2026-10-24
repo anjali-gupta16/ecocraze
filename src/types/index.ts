@@ -46,6 +46,7 @@ export interface Order {
   id: string;
   user_id: string;
   customer_name?: string;
+  customer_email?: string;
   total: number;
   discount: number;
   address: string;
@@ -104,6 +105,16 @@ export interface AdminKPI {
   value: string | number;
   change?: number;
   icon: string;
+}
+
+export interface CustomerVisit {
+  id: string;
+  email: string;
+  name: string;
+  firm?: string;
+  phone: string;
+  role: 'customer' | 'admin';
+  visited_at: string;
 }
 
 export interface CustomerReview {

@@ -115,6 +115,7 @@ export default function CheckoutPage() {
       const order = await createOrder({
         user_id: user?.id,
         customer_name: formData.name,
+        customer_email: formData.email || user?.email,
         total: grandTotal,
         discount: totalSavings,
         address: formData.address,
