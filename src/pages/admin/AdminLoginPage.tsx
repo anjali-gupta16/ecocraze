@@ -14,8 +14,8 @@ export default function AdminLoginPage() {
   const searchParams = new URLSearchParams(location.search);
   const errParam = searchParams.get('error');
 
-  const [email, setEmail] = useState('anshumangupta2501@gmail.com');
-  const [password, setPassword] = useState('Admin@123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(
     errParam === 'admin_required' ? 'Admin authentication required to access operations dashboard.' : ''
@@ -135,21 +135,7 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Quick One-Tap Admin Access */}
-          <div className="mt-6 pt-5 border-t border-slate-700/60 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                setEmail('anshumangupta2501@gmail.com');
-                setPassword('Admin@123456');
-                handleAdminSignIn();
-              }}
-              className="w-full py-2.5 px-3 bg-slate-900/60 hover:bg-slate-900 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl text-xs font-semibold text-emerald-400 flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>1-Click Admin Access (Demo Gateway)</span>
-            </button>
-          </div>
+
         </div>
 
         {/* Back Link to Customer Store */}

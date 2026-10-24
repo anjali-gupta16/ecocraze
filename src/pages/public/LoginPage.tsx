@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Leaf, Lock, Mail, ArrowRight, AlertTriangle, Sparkles } from 'lucide-react';
+import { Leaf, Lock, Mail, ArrowRight, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTracking } from '../../hooks/useTracking';
 import Input from '../../components/ui/Input';
@@ -13,8 +13,8 @@ export default function LoginPage() {
 
   const from = (location.state as any)?.from?.pathname || '/';
 
-  const [email, setEmail] = useState('wholesale@ecocraze.com');
-  const [password, setPassword] = useState('Anjali@123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -82,8 +82,9 @@ export default function LoginPage() {
                 setEmail(e.target.value);
                 if (error) setError('');
               }}
-              placeholder="e.g. wholesale@ecocraze.com"
+              placeholder="name@business.com"
               leftIcon={<Mail className="w-4 h-4" />}
+              autoComplete="email"
               required
             />
 
@@ -96,13 +97,11 @@ export default function LoginPage() {
                   setPassword(e.target.value);
                   if (error) setError('');
                 }}
-                placeholder="••••••••••••"
+                placeholder="Enter your password"
                 leftIcon={<Lock className="w-4 h-4" />}
+                autoComplete="current-password"
                 required
               />
-              <p className="mt-1.5 text-[11px] text-text-muted">
-                Demo Customer Password: <strong className="font-mono text-text-primary">Anjali@123456</strong>
-              </p>
             </div>
 
             <Button
@@ -116,21 +115,6 @@ export default function LoginPage() {
               Sign In to Wholesale Account
             </Button>
           </form>
-
-          {/* Quick 1-Click Customer Access */}
-          <div className="mt-6 pt-5 border-t border-border">
-            <button
-              type="button"
-              onClick={() => executeSignIn('wholesale@ecocraze.com', 'Anjali@123456')}
-              className="w-full p-2.5 bg-primary-50 hover:bg-primary-100 border border-primary-200 rounded-xl text-left transition-colors cursor-pointer flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary-600" />
-                <span className="text-xs font-bold text-primary-900">1-Click Customer Access</span>
-              </div>
-              <span className="text-[11px] font-semibold text-primary-700">Enter Catalog →</span>
-            </button>
-          </div>
 
           <div className="mt-6 text-center text-xs text-text-muted">
             Don't have a wholesale partner account?{' '}
