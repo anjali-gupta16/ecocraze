@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * Auth gate — redirects unauthenticated visitors to /login.
+ * For admin routes, requires a separate admin login session.
  * Preserves the attempted URL so login can redirect back.
  */
 export default function RequireAuth({
@@ -13,7 +14,7 @@ export default function RequireAuth({
   children: React.ReactElement;
   requireAdmin?: boolean;
 }) {
-  const { user, profile, loading, isAdmin } = useAuth();
+  const { user, profile, loading, isAdmin, adminAuthenticated } = useAuth();
   const location = useLocation();
 
   // Still checking session — show nothing (avoids flash)
@@ -29,7 +30,7 @@ export default function RequireAuth({
   let effectiveIsAdmin = isAdmin || profile?.role === 'admin';
 
   // Instant fallback check to localStorage to eliminate state hydration timing issues
-  if (!effectiveUser || (requireAdmin && !effectiveIsAdmin)) {
+  if (!effectiveUser) {
     try {
       const saved = localStorage.getItem('ecocraze_demo_session');
       if (saved) {
@@ -49,9 +50,10 @@ export default function RequireAuth({
     } catch {}
   }
 
+  // Admin routes: must be an admin user AND have authenticated via admin login page
   if (requireAdmin) {
-    if (!effectiveUser || !effectiveIsAdmin) {
-      return <Navigate to="/admin/login?error=admin_required" state={{ from: location }} replace />;
+    if (!effectiveUser || !effectiveIsAdmin || !adminAuthenticated) {
+      return <Navigate to="/admin/login" state={{ from: location }} replace />;
     }
   }
 

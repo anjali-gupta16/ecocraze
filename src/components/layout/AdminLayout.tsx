@@ -20,7 +20,7 @@ import Button from '../ui/Button';
 export default function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, isAdmin, signOut } = useAuth();
+  const { user, profile, isAdmin, signOut, clearAdminSession } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
@@ -140,6 +140,7 @@ export default function AdminLayout() {
 
             <button
               onClick={() => {
+                clearAdminSession();
                 signOut();
                 navigate('/admin/login');
               }}

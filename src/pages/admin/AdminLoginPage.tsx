@@ -8,7 +8,7 @@ import Button from '../../components/ui/Button';
 
 export default function AdminLoginPage() {
   const location = useLocation();
-  const { signIn, isAdmin } = useAuth();
+  const { signIn, isAdmin, adminAuthenticated, authenticateAdmin } = useAuth();
   const { logLogin } = useTracking();
 
   const searchParams = new URLSearchParams(location.search);
@@ -21,12 +21,12 @@ export default function AdminLoginPage() {
     errParam === 'admin_required' ? 'Admin authentication required to access operations dashboard.' : ''
   );
 
-  // If already authenticated as admin, jump directly into dashboard
+  // If already authenticated as admin via admin login, jump directly into dashboard
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin && adminAuthenticated) {
       window.location.href = '/admin';
     }
-  }, [isAdmin]);
+  }, [isAdmin, adminAuthenticated]);
 
   const handleAdminSignIn = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -46,6 +46,7 @@ export default function AdminLoginPage() {
     }
 
     logLogin(email);
+    authenticateAdmin();
     window.location.href = '/admin';
   };
 

@@ -13,6 +13,9 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   isAdmin: boolean;
+  adminAuthenticated: boolean;
+  authenticateAdmin: () => void;
+  clearAdminSession: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -88,6 +91,7 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
 
 const LOCAL_SESSION_KEY = 'ecocraze_demo_session';
 const LOCAL_USERS_KEY = 'ecocraze_registered_users';
+const ADMIN_SESSION_KEY = 'ecocraze_admin_session';
 
 function getStoredUsers(): Record<string, { password: string; profile: Profile }> {
   try {
@@ -103,6 +107,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [adminAuthenticated, setAdminAuthenticated] = useState(() => {
+    try {
+      return localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const authenticateAdmin = () => {
+    setAdminAuthenticated(true);
+    try { localStorage.setItem(ADMIN_SESSION_KEY, 'true'); } catch {}
+  };
+
+  const clearAdminSession = () => {
+    setAdminAuthenticated(false);
+    try { localStorage.removeItem(ADMIN_SESSION_KEY); } catch {}
+  };
 
   const fetchProfile = async (userId: string) => {
     try {
@@ -344,6 +365,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     try {
       localStorage.removeItem(LOCAL_SESSION_KEY);
+      localStorage.removeItem(ADMIN_SESSION_KEY);
       await supabase.auth.signOut().catch(() => {});
     } catch {
       // Ignore
@@ -351,6 +373,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setProfile(null);
     setSession(null);
+    setAdminAuthenticated(false);
   };
 
   const isAdmin =
@@ -361,7 +384,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     (user?.email?.toLowerCase() || '').includes('admin');
 
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut, isAdmin }}>
+    <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut, isAdmin, adminAuthenticated, authenticateAdmin, clearAdminSession }}>
       {children}
     </AuthContext.Provider>
   );
