@@ -17,7 +17,7 @@ VALUES
   'dona-bowls',
   '6 Inch / 250ml (Pack of 100)',
   '/products/colorful-dona-bowls.jpg',
-  110.00,
+  30.00,
   800,
   true
 ),
@@ -109,11 +109,11 @@ VALUES
 -- ============================================================
 
 
--- 6-inch Curry Dona (Base: 110)
+-- 6-inch Curry Dona (Base: 30)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('22222222-2222-2222-2222-222222220001', 1, 9, 110.00),
-('22222222-2222-2222-2222-222222220001', 10, 49, 95.00),
-('22222222-2222-2222-2222-222222220001', 50, NULL, 80.00);
+('22222222-2222-2222-2222-222222220001', 1, 9, 30.00),
+('22222222-2222-2222-2222-222222220001', 10, 49, 26.00),
+('22222222-2222-2222-2222-222222220001', 50, NULL, 22.00);
 
 -- 4-inch Golden Dona (Base: 30)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES

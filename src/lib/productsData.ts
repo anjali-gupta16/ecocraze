@@ -9,14 +9,14 @@ export const SEED_PRODUCTS: Product[] = [
     category: 'dona-bowls',
     size: '6 Inch / 250ml (Pack of 100)',
     image_url: '/products/colorful-dona-bowls.jpg',
-    price: 110.00,
+    price: 30.00,
     stock: 800,
     active: true,
     created_at: new Date().toISOString(),
     bulk_pricing: [
-      { product_id: '22222222-2222-2222-2222-222222220001', min_qty: 1, max_qty: 9, unit_price: 110.00 },
-      { product_id: '22222222-2222-2222-2222-222222220001', min_qty: 10, max_qty: 49, unit_price: 95.00 },
-      { product_id: '22222222-2222-2222-2222-222222220001', min_qty: 50, max_qty: null, unit_price: 80.00 },
+      { product_id: '22222222-2222-2222-2222-222222220001', min_qty: 1, max_qty: 9, unit_price: 30.00 },
+      { product_id: '22222222-2222-2222-2222-222222220001', min_qty: 10, max_qty: 49, unit_price: 26.00 },
+      { product_id: '22222222-2222-2222-2222-222222220001', min_qty: 50, max_qty: null, unit_price: 22.00 },
     ],
   },
   {
