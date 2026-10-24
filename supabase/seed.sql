@@ -71,12 +71,12 @@ VALUES
 ),
 (
   '33333333-3333-3333-3333-333333330002',
-  '22x22 cm Fast Food Dispenser Napkins',
-  'Standard single fold table dispenser napkins. Highly economical daily consumable for restaurants, tea stalls and food courts.',
+  'TOP Tissue Paper Napkins (22x22 cm)',
+  'Standard 22x22 cm single fold tissue napkins. Economical daily consumable for restaurants, fast food outlets, tea stalls and catering.',
   'tissue-papers',
-  '22x22 cm (Pack of 200)',
-  'https://images.unsplash.com/photo-1584556812952-905ffd0c611a?auto=format&fit=crop&w=600&q=80',
-  75.00,
+  '22x22 cm (Pack of 50)',
+  '/products/top-tissue-napkins.jpg',
+  10.00,
   1200,
   true
 ),
@@ -139,11 +139,11 @@ INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUE
 ('33333333-3333-3333-3333-333333330001', 10, 49, 10.00),
 ('33333333-3333-3333-3333-333333330001', 50, NULL, 9.00);
 
--- 22x22 cm Dispenser Napkins (Base: 75)
+-- TOP Tissue Paper Napkins (Base: 10)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('33333333-3333-3333-3333-333333330002', 1, 9, 75.00),
-('33333333-3333-3333-3333-333333330002', 10, 49, 62.00),
-('33333333-3333-3333-3333-333333330002', 50, NULL, 52.00);
+('33333333-3333-3333-3333-333333330002', 1, 9, 10.00),
+('33333333-3333-3333-3333-333333330002', 10, 49, 8.50),
+('33333333-3333-3333-3333-333333330002', 50, NULL, 7.00);
 
 -- Pop-Up Interfold Napkins (Base: 90)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
