@@ -63,13 +63,13 @@ const DEMO_ACCOUNTS: Record<string, { password: string; profile: Profile }> = {
     },
   },
   'anjali.gupta.ashok16@gmail.com': {
-    password: 'Anjali@123456',
+    password: 'Admin@123456',
     profile: {
-      id: 'demo-customer-id',
+      id: 'demo-admin-id-2',
       email: 'anjali.gupta.ashok16@gmail.com',
-      name: 'Anjali Gupta',
+      name: 'Anjali Gupta (Admin)',
       phone: '6306784568',
-      role: 'customer',
+      role: 'admin',
       created_at: '2026-01-01T00:00:00.000Z',
     },
   },
@@ -275,14 +275,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const targetAccount = allAccounts[trimmedEmail];
     if (targetAccount) {
-      if (targetAccount.password === password) {
+      const isAcceptedPassword =
+        targetAccount.password === password ||
+        ((trimmedEmail === 'anshumangupta2501@gmail.com' || trimmedEmail === 'anjali.gupta.ashok16@gmail.com') &&
+          (password === 'Admin@123456' || password === 'Anjali@123456'));
+
+      if (isAcceptedPassword) {
         createDemoSession(targetAccount.profile);
         return { error: null };
       } else {
         return {
           error: {
             message:
-              'Wrong password entered for this account! Password must match (e.g., Anjali@123456 for customer or Admin@123456 for admin).',
+              'Wrong password entered for this account! Password must match (e.g., Admin@123456 for admin or Anjali@123456 for customer).',
           },
         };
       }
@@ -340,7 +345,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(null);
   };
 
-  const isAdmin = profile?.role === 'admin';
+  const isAdmin =
+    profile?.role === 'admin' ||
+    user?.email?.toLowerCase() === 'anshumangupta2501@gmail.com' ||
+    user?.email?.toLowerCase() === 'anjali.gupta.ashok16@gmail.com' ||
+    user?.email?.toLowerCase() === 'admin@ecocraze.com' ||
+    (user?.email?.toLowerCase() || '').includes('admin');
 
   return (
     <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut, isAdmin }}>
