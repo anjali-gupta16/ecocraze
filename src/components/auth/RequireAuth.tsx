@@ -49,12 +49,14 @@ export default function RequireAuth({
     } catch {}
   }
 
-  if (!effectiveUser) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (requireAdmin) {
+    if (!effectiveUser || !effectiveIsAdmin) {
+      return <Navigate to="/admin/login?error=admin_required" state={{ from: location }} replace />;
+    }
   }
 
-  if (requireAdmin && !effectiveIsAdmin) {
-    return <Navigate to="/login?error=admin_required" state={{ from: location }} replace />;
+  if (!effectiveUser) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;

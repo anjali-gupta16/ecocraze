@@ -141,7 +141,7 @@ export default function AdminLayout() {
             <button
               onClick={() => {
                 signOut();
-                navigate('/login');
+                navigate('/admin/login');
               }}
               title="Sign Out"
               className="text-slate-400 hover:text-red-400 p-1.5 rounded hover:bg-slate-800 transition-colors"
@@ -163,7 +163,7 @@ export default function AdminLayout() {
                 Evaluating in Preview Mode. You can inspect all admin features, analytics, and update live orders freely.
               </span>
             </div>
-            <Link to="/login" className="font-bold text-amber-800 underline hover:text-amber-950 shrink-0">
+            <Link to="/admin/login" className="font-bold text-amber-800 underline hover:text-amber-950 shrink-0">
               Sign In with Full Admin Account →
             </Link>
           </div>

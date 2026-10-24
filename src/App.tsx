@@ -24,6 +24,7 @@ import AboutPage from './pages/public/AboutPage';
 import ContactPage from './pages/public/ContactPage';
 
 // Admin Pages
+import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminOverview from './pages/admin/AdminOverview';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -72,10 +73,13 @@ export default function App() {
               <Route path="payments" element={<AdminPayments />} />
             </Route>
 
+            {/* Dedicated Admin Login Portal */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+
             {/* Direct 1-Click Access Links */}
-            <Route path="/customer" element={<Navigate to="/login?role=customer" replace />} />
-            <Route path="/admin-access" element={<Navigate to="/login?role=admin" replace />} />
-            <Route path="/admin-login" element={<Navigate to="/login?role=admin" replace />} />
+            <Route path="/customer" element={<Navigate to="/login" replace />} />
+            <Route path="/admin-access" element={<Navigate to="/admin/login" replace />} />
+            <Route path="/admin-login" element={<Navigate to="/admin/login" replace />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
