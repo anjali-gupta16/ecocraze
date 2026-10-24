@@ -60,13 +60,13 @@ INSERT INTO public.products (id, name, description, category, size, image_url, p
 VALUES
 (
   '33333333-3333-3333-3333-333333330001',
-  '30x30 cm 2-Ply Ultra Soft White Table Napkins',
-  'Premium virgin pulp 2-ply dinner napkins with embossed borders. Highly absorbent, lint-free and soft on sensitive skin.',
+  'OJAS Soft Paper Napkins (27x30 cm)',
+  'Soft, absorbent 27x30 cm paper table napkins with embossed border design. Food-grade virgin paper for restaurants, cafes, catering and events.',
   'tissue-papers',
-  '30x30 cm (Pack of 100)',
-  'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80',
-  85.00,
-  700,
+  '27x30 cm (60g Pack)',
+  '/products/ojas-paper-napkins.jpg',
+  12.00,
+  1200,
   true
 ),
 (
@@ -133,11 +133,11 @@ INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUE
 ('22222222-2222-2222-2222-222222220004', 10, 49, 10.00),
 ('22222222-2222-2222-2222-222222220004', 50, NULL, 9.00);
 
--- 30x30 cm Soft Table Napkins (Base: 85)
+-- OJAS Soft Paper Napkins (Base: 12)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES
-('33333333-3333-3333-3333-333333330001', 1, 9, 85.00),
-('33333333-3333-3333-3333-333333330001', 10, 49, 72.00),
-('33333333-3333-3333-3333-333333330001', 50, NULL, 60.00);
+('33333333-3333-3333-3333-333333330001', 1, 9, 12.00),
+('33333333-3333-3333-3333-333333330001', 10, 49, 10.00),
+('33333333-3333-3333-3333-333333330001', 50, NULL, 9.00);
 
 -- 22x22 cm Dispenser Napkins (Base: 75)
 INSERT INTO public.bulk_pricing (product_id, min_qty, max_qty, unit_price) VALUES

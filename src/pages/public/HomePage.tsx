@@ -152,9 +152,9 @@ export default function HomePage() {
           <CategoryCard
             category="tissue-papers"
             title="Tissue Papers & Rolls"
-            subtitle="2-ply virgin pulp table napkins, dispenser tissues, and absorbent kitchen paper rolls."
+            subtitle="Soft paper table napkins, dispenser tissues, and absorbent kitchen paper rolls."
             itemCount="4 Products"
-            imageUrl="/products/white-table-napkins.jpg"
+            imageUrl="/products/ojas-paper-napkins.jpg"
           />
         </div>
       </section>

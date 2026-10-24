@@ -127,7 +127,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
           {lowestPrice < product.price && (
             <p className="text-[11px] text-amber-700 font-medium mt-0.5">
-              Wholesale tier: As low as ₹{lowestPrice.toFixed(2)}/pkt
+              Wholesale tier: As low as ₹{lowestPrice.toFixed(2)}/packet
             </p>
           )}
         </div>

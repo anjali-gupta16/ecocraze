@@ -74,19 +74,19 @@ export const SEED_PRODUCTS: Product[] = [
   // 2. TISSUE PAPERS
   {
     id: '33333333-3333-3333-3333-333333330001',
-    name: '30x30 cm 2-Ply Ultra Soft White Table Napkins',
-    description: 'Premium virgin pulp 2-ply dinner napkins with embossed borders. Highly absorbent, lint-free and soft on sensitive skin.',
+    name: 'OJAS Soft Paper Napkins (27x30 cm)',
+    description: 'Soft, absorbent 27x30 cm paper table napkins with embossed border design. Food-grade virgin paper for restaurants, cafes, catering and events.',
     category: 'tissue-papers',
-    size: '30x30 cm (Pack of 100)',
-    image_url: '/products/white-table-napkins.jpg',
-    price: 85.00,
-    stock: 700,
+    size: '27x30 cm (60g Pack)',
+    image_url: '/products/ojas-paper-napkins.jpg',
+    price: 12.00,
+    stock: 1200,
     active: true,
     created_at: new Date().toISOString(),
     bulk_pricing: [
-      { product_id: '33333333-3333-3333-3333-333333330001', min_qty: 1, max_qty: 9, unit_price: 85.00 },
-      { product_id: '33333333-3333-3333-3333-333333330001', min_qty: 10, max_qty: 49, unit_price: 72.00 },
-      { product_id: '33333333-3333-3333-3333-333333330001', min_qty: 50, max_qty: null, unit_price: 60.00 },
+      { product_id: '33333333-3333-3333-3333-333333330001', min_qty: 1, max_qty: 9, unit_price: 12.00 },
+      { product_id: '33333333-3333-3333-3333-333333330001', min_qty: 10, max_qty: 49, unit_price: 10.00 },
+      { product_id: '33333333-3333-3333-3333-333333330001', min_qty: 50, max_qty: null, unit_price: 9.00 },
     ],
   },
   {
