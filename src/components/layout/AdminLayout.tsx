@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   Leaf,
+  MessageSquareQuote,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../ui/Button';
@@ -30,6 +31,7 @@ export default function AdminLayout() {
     { to: '/admin/visitors', label: 'Visitor Analytics & Funnel', icon: Eye },
     { to: '/admin/customers', label: 'Customers & Logins', icon: Users },
     { to: '/admin/payments', label: 'Payments & Revenue', icon: CreditCard },
+    { to: '/admin/reviews', label: 'Customer Reviews', icon: MessageSquareQuote },
   ];
 
   const isCurrent = (path: string, exact = false) => {

@@ -31,6 +31,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminVisitors from './pages/admin/AdminVisitors';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminPayments from './pages/admin/AdminPayments';
+import AdminReviews from './pages/admin/AdminReviews';
 
 export default function App() {
   return (
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="visitors" element={<AdminVisitors />} />
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="payments" element={<AdminPayments />} />
+              <Route path="reviews" element={<AdminReviews />} />
             </Route>
 
             {/* Dedicated Admin Login Portal */}

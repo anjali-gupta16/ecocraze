@@ -89,6 +89,20 @@ CREATE TABLE IF NOT EXISTS public.events (
   created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 8. REVIEWS TABLE (Genuine Customer Reviews)
+CREATE TABLE IF NOT EXISTS public.reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  business_name TEXT,
+  city TEXT,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  title TEXT,
+  comment TEXT NOT NULL,
+  verified_buyer BOOLEAN DEFAULT false,
+  order_id UUID REFERENCES public.orders(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_products_category ON public.products(category);
 CREATE INDEX IF NOT EXISTS idx_bulk_pricing_product ON public.bulk_pricing(product_id);
@@ -97,6 +111,7 @@ CREATE INDEX IF NOT EXISTS idx_order_items_order ON public.order_items(order_id)
 CREATE INDEX IF NOT EXISTS idx_events_created ON public.events(created_at);
 CREATE INDEX IF NOT EXISTS idx_events_type ON public.events(type);
 CREATE INDEX IF NOT EXISTS idx_events_session ON public.events(session_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_created ON public.reviews(created_at);
 
 -- ============================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
@@ -108,6 +123,7 @@ ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
 -- Helper function: is_admin
 CREATE OR REPLACE FUNCTION public.is_admin()
@@ -193,6 +209,16 @@ CREATE POLICY "Everyone can insert events" ON public.events
 
 CREATE POLICY "Admin can read events" ON public.events
   FOR SELECT USING (public.is_admin());
+
+-- REVIEWS Policies (Genuine customer reviews)
+CREATE POLICY "Public can read reviews" ON public.reviews
+  FOR SELECT USING (true);
+
+CREATE POLICY "Anyone can submit reviews" ON public.reviews
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Admin can delete reviews" ON public.reviews
+  FOR DELETE USING (public.is_admin());
 
 -- Trigger to auto-create profile on auth.user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()

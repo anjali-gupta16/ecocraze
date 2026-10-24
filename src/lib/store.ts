@@ -1,12 +1,13 @@
 import { supabase } from './supabase';
 import { SEED_PRODUCTS } from './productsData';
 import { safeUUID } from './uuid';
-import type { Product, Order, OrderItem, TrackingEvent, BulkTier } from '../types';
+import type { Product, Order, OrderItem, TrackingEvent, BulkTier, CustomerReview } from '../types';
 
 const LOCAL_PRODUCTS_KEY = 'pc_local_products_v12';
 const LOCAL_ORDERS_KEY = 'pc_local_orders';
 const LOCAL_EVENTS_KEY = 'pc_local_events';
 const LOCAL_USED_UTRS_KEY = 'pc_used_utrs';
+const LOCAL_REVIEWS_KEY = 'pc_customer_reviews';
 
 // ----------------- UTR DEDUPLICATION -----------------
 
@@ -381,4 +382,95 @@ export function saveLocalEvent(event: TrackingEvent) {
   } catch (e) {
     console.error('Error saving local event', e);
   }
+}
+
+// ----------------- GENUINE CUSTOMER REVIEWS -----------------
+
+export function getLocalCustomerReviews(): CustomerReview[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_REVIEWS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveLocalCustomerReviews(reviews: CustomerReview[]) {
+  try {
+    localStorage.setItem(LOCAL_REVIEWS_KEY, JSON.stringify(reviews));
+    window.dispatchEvent(new CustomEvent('reviews-updated'));
+  } catch (e) {
+    console.error('Error saving local reviews', e);
+  }
+}
+
+export async function getCustomerReviews(): Promise<CustomerReview[]> {
+  try {
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (!error && data && data.length > 0) {
+        saveLocalCustomerReviews(data);
+        return data;
+      }
+    }
+  } catch (err) {
+    console.warn('Could not reach Supabase for reviews, using local fallback:', err);
+  }
+
+  return getLocalCustomerReviews();
+}
+
+export async function submitCustomerReview(reviewInput: Omit<CustomerReview, 'id' | 'created_at'>): Promise<CustomerReview> {
+  const newReview: CustomerReview = {
+    ...reviewInput,
+    id: safeUUID(),
+    created_at: new Date().toISOString(),
+  };
+
+  // Try saving to Supabase if configured
+  try {
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      await supabase.from('reviews').insert({
+        id: newReview.id,
+        name: newReview.name,
+        business_name: newReview.business_name || null,
+        city: newReview.city || null,
+        rating: newReview.rating,
+        title: newReview.title || null,
+        comment: newReview.comment,
+        verified_buyer: newReview.verified_buyer,
+        order_id: newReview.order_id || null,
+        created_at: newReview.created_at,
+      });
+    }
+  } catch (e) {
+    console.warn('Supabase review submission warning:', e);
+  }
+
+  // Save to local storage
+  const current = getLocalCustomerReviews();
+  const updated = [newReview, ...current];
+  saveLocalCustomerReviews(updated);
+
+  return newReview;
+}
+
+export async function deleteCustomerReview(id: string): Promise<boolean> {
+  try {
+    const hasConfig = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+    if (hasConfig) {
+      await supabase.from('reviews').delete().eq('id', id);
+    }
+  } catch (e) {
+    console.warn('Supabase review deletion warning:', e);
+  }
+
+  const current = getLocalCustomerReviews();
+  saveLocalCustomerReviews(current.filter((r) => r.id !== id));
+  return true;
 }

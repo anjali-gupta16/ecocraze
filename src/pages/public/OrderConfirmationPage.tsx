@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle2, PackageCheck, ArrowRight, MessageCircle, Truck, Mail, Smartphone, Clock, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, PackageCheck, ArrowRight, MessageCircle, Truck, Mail, Smartphone, Clock, AlertTriangle, Star } from 'lucide-react';
 import { getOrders } from '../../lib/store';
 import { getNotificationStatus } from '../../lib/notifications';
 import type { Order } from '../../types';
@@ -8,12 +8,14 @@ import OrderTimeline from '../../components/order/OrderTimeline';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/Spinner';
 import { createWhatsAppUrl } from '../../lib/whatsapp';
+import WriteReviewModal from '../../components/reviews/WriteReviewModal';
 
 export default function OrderConfirmationPage() {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [notifStatus, setNotifStatus] = useState<{ smsSent: boolean; emailSent: boolean; phone: string; email: string } | null>(null);
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -233,6 +235,29 @@ export default function OrderConfirmationPage() {
         </div>
       )}
 
+      {/* Genuine Review Invitation Banner */}
+      <div className="bg-gradient-to-r from-primary-50 via-emerald-50/40 to-primary-50 rounded-2xl border border-primary-200 p-6 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5 text-center sm:text-left">
+          <div className="w-12 h-12 bg-white rounded-2xl shadow-xs border border-primary-200 flex items-center justify-center text-amber-500 shrink-0">
+            <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-text-primary">
+              Are you happy with your ordering experience?
+            </h4>
+            <p className="text-xs text-text-secondary mt-0.5">
+              Help other Indian businesses by leaving a 100% genuine customer review.
+            </p>
+          </div>
+        </div>
+        <Button
+          onClick={() => setReviewModalOpen(true)}
+          className="shrink-0 text-xs font-bold px-5 py-2.5 shadow-sm"
+        >
+          Leave a Verified Review
+        </Button>
+      </div>
+
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link to="/account" className="w-full sm:w-auto">
@@ -257,6 +282,14 @@ export default function OrderConfirmationPage() {
           </Button>
         </Link>
       </div>
+
+      {/* Write Review Modal */}
+      <WriteReviewModal
+        isOpen={reviewModalOpen}
+        onClose={() => setReviewModalOpen(false)}
+        defaultVerified={true}
+        orderId={order?.id}
+      />
     </div>
   );
 }

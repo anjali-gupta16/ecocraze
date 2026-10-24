@@ -105,3 +105,16 @@ export interface AdminKPI {
   change?: number;
   icon: string;
 }
+
+export interface CustomerReview {
+  id: string;
+  name: string;
+  business_name?: string;
+  city?: string;
+  rating: number; // 1 to 5
+  title?: string;
+  comment: string;
+  verified_buyer: boolean;
+  order_id?: string;
+  created_at: string;
+}

@@ -8,8 +8,6 @@ import {
   Layers,
   Sparkles,
   MessageCircle,
-  Star,
-  Quote,
 } from 'lucide-react';
 import { getProducts } from '../../lib/store';
 import type { Product } from '../../types';
@@ -17,6 +15,7 @@ import CategoryCard from '../../components/product/CategoryCard';
 import ProductGrid from '../../components/product/ProductGrid';
 import Button from '../../components/ui/Button';
 import { createWhatsAppUrl } from '../../lib/whatsapp';
+import CustomerReviewsSection from '../../components/reviews/CustomerReviewsSection';
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -276,66 +275,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. TESTIMONIALS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-3 py-1 rounded-full border border-primary-200">
-            Client Reviews
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-text-primary mt-3">
-            Trusted by 500+ Indian Businesses
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              quote: 'The 12-inch silver plates hold heavy wedding daal makhani and gravies without sagging. The 50+ packet tier pricing saved our catering business over ₹18,000 last season!',
-              name: 'Rajesh Sharma',
-              role: 'Owner, Sharma Grand Caterers (Jaipur)',
-              rating: 5,
-            },
-            {
-              quote: 'We switched our 6 restaurant outlets to Ecocraze interfold dispenser napkins. Reduced napkin waste by almost 30% and delivery is always on time.',
-              name: 'Ananya Deshmukh',
-              role: 'Procurement Head, Desi Bowls Cafe (Pune)',
-              rating: 5,
-            },
-            {
-              quote: 'WhatsApp ordering is seamless! I just send my monthly requirement and the dispatch happens next day with full GST invoices. Top notch reliability.',
-              name: 'Mohd. Imran',
-              role: 'Partner, Royal Biryani & Catering (Hyderabad)',
-              rating: 5,
-            },
-          ].map((t, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-2xl border border-border p-6 shadow-sm flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center gap-1 text-amber-500 mb-3">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 stroke-none" />
-                  ))}
-                </div>
-                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed italic mb-6">
-                  "{t.quote}"
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-border flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-bold">
-                  {t.name[0]}
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-text-primary">{t.name}</p>
-                  <p className="text-[11px] text-text-muted">{t.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 6. GENUINE CUSTOMER REVIEWS */}
+      <CustomerReviewsSection />
     </div>
   );
 }
